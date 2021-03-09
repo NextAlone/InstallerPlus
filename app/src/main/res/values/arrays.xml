@@ -2,5 +2,6 @@
 <resources>
     <string-array name="xposedscope">
         <item>com.google.android.packageinstaller</item>
+        <item>ltd.nextalone.packageinstaller</item>
     </string-array>
 </resources>

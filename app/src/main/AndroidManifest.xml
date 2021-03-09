@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="ltd.nextalone.packageInstaller">
+    package="ltd.nextalone.packageinstaller">
 
     <application
         android:allowBackup="true"

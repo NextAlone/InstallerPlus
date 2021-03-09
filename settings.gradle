@@ -6,4 +6,4 @@ dependencyResolutionManagement {
         jcenter()
     }
 }
-rootProject.name = "packageInstaller"
+rootProject.name = "packageinstaller"

@@ -8,7 +8,7 @@ android {
     buildToolsVersion "30.0.3"
 
     defaultConfig {
-        applicationId "ltd.nextalone.packageInstaller"
+        applicationId "ltd.nextalone.packageinstaller"
         minSdkVersion 30
         targetSdkVersion 30
         versionCode 1
