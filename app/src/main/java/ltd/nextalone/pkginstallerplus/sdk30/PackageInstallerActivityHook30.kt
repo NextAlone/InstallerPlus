@@ -64,6 +64,7 @@ object PackageInstallerActivityHook30 {
             sb.append("PackageName:\n")
                 .append(" +$pkgName", greenSpan, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
                 .append('\n')
+                .append("Version:\n")
                 .append(" +$oldVersionStr", greenSpan, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
             layout.setPadding(0, context.dip2px(21f), 0, 0)
         } else {
@@ -71,7 +72,7 @@ object PackageInstallerActivityHook30 {
             val newVersionStr = """${newPkgInfo.versionName ?: "N/A"}(${newPkgInfo.longVersionCode})"""
             sb.append("PackageName:\n")
                 .append("  $pkgName\n")
-                .append("Version:\n")
+                .append("Version change:\n")
                 .append(" +$newVersionStr", greenSpan, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
                 .append('\n')
                 .append(" -$oldVersionStr", redSpan, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
