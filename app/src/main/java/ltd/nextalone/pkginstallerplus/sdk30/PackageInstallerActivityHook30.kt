@@ -34,7 +34,7 @@ object PackageInstallerActivityHook30 {
                         if (confirm != null) {
                             replaceSpacerWithInfoView(confirm, ctx)
                         } else {
-                            Log.e(TAG, "spacer view not found")
+                            Log.e(TAG, "confirm view not found")
                         }
                     }
                 })
@@ -78,7 +78,6 @@ object PackageInstallerActivityHook30 {
             layout.setPadding(0, context.dip2px(45f), 0, 0)
         }
         textView.text = sb
-
         layout.addView(textView, ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT))
         (confirm.parent as ViewGroup).addView(layout)
     }
