@@ -3,21 +3,21 @@
     package="ltd.nextalone.pkginstallerplus">
 
     <application
-        android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
-        android:supportsRtl="true">
+        android:supportsRtl="true"
+        android:usesNonSdkApi="true">
 
         <meta-data
             android:name="xposedmodule"
             android:value="true" />
         <meta-data
             android:name="xposeddescription"
-            android:value="A Xposed demo." />
+            android:value="Add extra features to the package installer." />
         <meta-data
             android:name="xposedminversion"
-            android:value="89" />
+            android:value="82" />
         <meta-data
             android:name="xposedscope"
             android:resource="@array/xposedscope" />
