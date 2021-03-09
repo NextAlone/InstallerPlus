@@ -9,7 +9,7 @@ android {
 
     defaultConfig {
         applicationId "ltd.nextalone.pkginstallerplus"
-        minSdkVersion 30
+        minSdkVersion 23
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
