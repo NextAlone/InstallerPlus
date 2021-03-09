@@ -1,4 +1,4 @@
-package ltd.nextalone.packageinstaller
+package ltd.nextalone.pkginstallerplus
 
 import android.util.Log
 import de.robv.android.xposed.XposedHelpers
@@ -14,7 +14,7 @@ class MainHook  {
     private fun hookPackageInstaller(lpparam: XC_LoadPackage.LoadPackageParam) {
         Log.d(TAG, "hookPackageInstaller: ")
         val hookClass =
-            lpparam.classLoader.loadClass("ltd.nextalone.packageinstaller.MainHook") ?: return
+            lpparam.classLoader.loadClass("ltd.nextalone.pkginstallerplus.MainHook") ?: return
         // 通过XposedHelpers调用静态方法printlnHelloWorld
         XposedHelpers.callStaticMethod(hookClass, "printlnHelloWorld")
         val demoClass = hookClass.newInstance()

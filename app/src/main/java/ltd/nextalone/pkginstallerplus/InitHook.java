@@ -1,4 +1,4 @@
-package ltd.nextalone.packageinstaller;
+package ltd.nextalone.pkginstallerplus;
 
 import android.util.Log;
 
