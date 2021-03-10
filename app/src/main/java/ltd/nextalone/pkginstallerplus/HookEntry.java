@@ -5,7 +5,6 @@ import static ltd.nextalone.pkginstallerplus.UtilsKt.iget_object_or_null;
 import android.annotation.SuppressLint;
 import android.content.res.AssetManager;
 import android.content.res.Resources;
-import android.os.Build.VERSION;
 import android.util.Log;
 import dalvik.system.BaseDexClassLoader;
 import de.robv.android.xposed.IXposedHookLoadPackage;
@@ -27,13 +26,15 @@ public class HookEntry implements IXposedHookLoadPackage {
 
     private static void initializeHookInternal(XC_LoadPackage.LoadPackageParam lpparam) {
         Log.d(TAG, "Hooked");
-        switch (VERSION.SDK_INT) {
-            case 25:
+        try {
+            PackageInstallerActivityHook30.INSTANCE.initOnce(lpparam.classLoader);
+        } catch (Exception e) {
+            try {
                 PackageInstallerActivityHook.INSTANCE.initOnce(lpparam.classLoader);
-                break;
-            case 30:
-                PackageInstallerActivityHook30.INSTANCE.initOnce(lpparam.classLoader);
-                break;
+            } catch (Exception e1) {
+                e.addSuppressed(e1);
+                Log.e(TAG, "initializeHookInternal: ", e);
+            }
         }
     }
 
