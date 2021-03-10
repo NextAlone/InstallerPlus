@@ -73,9 +73,9 @@ object PackageInstallerActivityHook30 {
             sb.append("PackageName:\n")
                 .append("  $pkgName\n")
                 .append("Version change:\n")
-                .append(" +$newVersionStr", greenSpan, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-                .append('\n')
                 .append(" -$oldVersionStr", redSpan, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+                .append('\n')
+                .append(" +$newVersionStr", greenSpan, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
             layout.setPadding(0, context.dip2px(45f), 0, 0)
         }
         textView.text = sb
