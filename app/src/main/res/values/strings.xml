@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">Installer++</string>
-    <string name="application_details">Application details</string>
     <string name="version">Version</string>
     <string name="package_name">Package</string>
     <string name="res_inject_success">Resources injection success</string>

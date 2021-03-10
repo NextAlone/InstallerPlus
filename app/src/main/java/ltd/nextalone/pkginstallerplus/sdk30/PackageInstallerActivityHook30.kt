@@ -61,8 +61,7 @@ object PackageInstallerActivityHook30 {
         if (oldPkgInfo == null) {
             val oldVersionStr =
                 (newPkgInfo.versionName ?: "N/A") + "(" + newPkgInfo.longVersionCode + ")"
-            sb.append("${context.resources.getString(R.string.application_details)}:\n")
-                .append("${context.resources.getString(R.string.package_name)}:\n")
+            sb.append("${context.resources.getString(R.string.package_name)}:\n")
                 .append(" +$pkgName", ForegroundColorSpan(ThemeUtil.colorGreen), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
                 .append('\n')
                 .append("${context.resources.getString(R.string.version)}:\n")
@@ -71,8 +70,7 @@ object PackageInstallerActivityHook30 {
         } else {
             val oldVersionStr = """${oldPkgInfo.versionName ?: "N/A"}(${oldPkgInfo.longVersionCode})"""
             val newVersionStr = """${newPkgInfo.versionName ?: "N/A"}(${newPkgInfo.longVersionCode})"""
-            sb.append("${context.resources.getString(R.string.application_details)}:\n")
-                .append("${context.resources.getString(R.string.package_name)}:\n")
+            sb.append("${context.resources.getString(R.string.package_name)}:\n")
                 .append("  $pkgName\n")
                 .append("${context.resources.getString(R.string.version)}:\n")
                 .append(" -$oldVersionStr", ForegroundColorSpan(ThemeUtil.colorRed), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
