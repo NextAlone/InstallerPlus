@@ -18,6 +18,7 @@ import androidx.annotation.RequiresApi
 import de.robv.android.xposed.XC_MethodHook
 import de.robv.android.xposed.XposedHelpers.getObjectField
 import ltd.nextalone.pkginstallerplus.*
+import ltd.nextalone.pkginstallerplus.HookEntry.injectModuleResources
 
 object PackageInstallerActivityHook30 {
 
@@ -29,6 +30,7 @@ object PackageInstallerActivityHook30 {
                     @RequiresApi(Build.VERSION_CODES.P)
                     override fun afterHookedMethod(param: MethodHookParam) {
                         val ctx: Activity = param.thisObject as Activity
+                        injectModuleResources(ctx.resources)
                         val confirmId = ctx.resources.getIdentifier("install_confirm_question_update", "id", "com.android.packageinstaller")
                         val confirm: View? = ctx.findViewById(confirmId)
                         if (confirm != null) {
@@ -61,18 +63,18 @@ object PackageInstallerActivityHook30 {
         if (oldPkgInfo == null) {
             val oldVersionStr =
                 (newPkgInfo.versionName ?: "N/A") + "(" + newPkgInfo.longVersionCode + ")"
-            sb.append("PackageName:\n")
+            sb.append("${context.resources.getString(R.string.package_name)}:\n")
                 .append(" +$pkgName", greenSpan, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
                 .append('\n')
-                .append("Version:\n")
+                .append("${context.resources.getString(R.string.version)}:\n")
                 .append(" +$oldVersionStr", greenSpan, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
             layout.setPadding(0, context.dip2px(21f), 0, 0)
         } else {
             val oldVersionStr = """${oldPkgInfo.versionName ?: "N/A"}(${oldPkgInfo.longVersionCode})"""
             val newVersionStr = """${newPkgInfo.versionName ?: "N/A"}(${newPkgInfo.longVersionCode})"""
-            sb.append("PackageName:\n")
+            sb.append("${context.resources.getString(R.string.package_name)}:\n")
                 .append("  $pkgName\n")
-                .append("Version change:\n")
+                .append("${context.resources.getString(R.string.version_change)}:\n")
                 .append(" -$oldVersionStr", redSpan, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
                 .append('\n')
                 .append(" +$newVersionStr", greenSpan, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)

@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.Log
 import de.robv.android.xposed.XC_MethodHook
 import de.robv.android.xposed.XposedBridge
+import java.lang.reflect.Field
 import java.lang.reflect.Member
 
 internal const val TAG = "NextAlone"
@@ -46,4 +47,35 @@ fun Context.dip2sp(dpValue: Float): Int {
 fun Context.px2sp(pxValue: Float): Int {
     val fontScale = resources.displayMetrics.scaledDensity
     return (pxValue / fontScale + 0.5f).toInt()
+}
+
+fun findField(clazz: Class<*>?, type: Class<*>?, name: String?): Field? {
+    if (clazz != null && name?.length!! > 0) {
+        var clz: Class<*> = clazz
+        do {
+            for (field in clz.declaredFields) {
+                if ((type == null || field.type == type) && (field.name == name)
+                ) {
+                    field.isAccessible = true
+                    return field
+                }
+            }
+        } while (clz.superclass.also { clz = it } != null)
+    }
+    return null
+}
+
+fun iget_object_or_null(obj: Any, name: String?): Any? {
+    return iget_object_or_null<Any>(obj, name, null)
+}
+
+fun <T> iget_object_or_null(obj: Any, name: String?, type: Class<T>?): T? {
+    val clazz: Class<*> = obj.javaClass
+    try {
+        val f: Field = findField(clazz, type, name) as Field
+        f.isAccessible = true
+        return f[obj] as T
+    } catch (e: Exception) {
+    }
+    return null
 }
