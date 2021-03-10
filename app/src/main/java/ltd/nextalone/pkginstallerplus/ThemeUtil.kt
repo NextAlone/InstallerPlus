@@ -1,6 +1,5 @@
 package ltd.nextalone.pkginstallerplus
 
-import android.R
 import android.content.Context
 import android.util.TypedValue
 
@@ -11,7 +10,7 @@ object ThemeUtil {
     var colorAccent: Int = 0xFF000000.toInt()
     var colorRed: Int = 0xFFDA3633.toInt()
     var colorGreen: Int = 0xFF238636.toInt()
-
+    var colorYellow: Int = 0xfff1c40f.toInt()
     fun init(ctx: Context) {
         val value = TypedValue()
         if (ctx.theme?.resolveAttribute(R.attr.colorPrimary, value, true) == true) {

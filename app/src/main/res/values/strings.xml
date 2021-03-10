@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Installer++</string>
-    <string name="package_name">应用包名</string>
-    <string name="version">版本</string>
-    <string name="version_change">版本变动</string>
+    <string name="application_details">Application details</string>
+    <string name="version">Version</string>
+    <string name="package_name">Package</string>
     <string name="res_inject_success">Resources injection success</string>
 </resources>

@@ -58,26 +58,26 @@ object PackageInstallerActivityHook30 {
             null
         }
         val sb = SpannableStringBuilder()
-        val greenSpan = ForegroundColorSpan(ThemeUtil.colorGreen)
-        val redSpan = ForegroundColorSpan(ThemeUtil.colorRed)
         if (oldPkgInfo == null) {
             val oldVersionStr =
                 (newPkgInfo.versionName ?: "N/A") + "(" + newPkgInfo.longVersionCode + ")"
-            sb.append("${context.resources.getString(R.string.package_name)}:\n")
-                .append(" +$pkgName", greenSpan, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+            sb.append("${context.resources.getString(R.string.application_details)}:\n")
+                .append("${context.resources.getString(R.string.package_name)}:\n")
+                .append(" +$pkgName", ForegroundColorSpan(ThemeUtil.colorGreen), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
                 .append('\n')
                 .append("${context.resources.getString(R.string.version)}:\n")
-                .append(" +$oldVersionStr", greenSpan, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+                .append(" +$oldVersionStr", ForegroundColorSpan(ThemeUtil.colorGreen), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
             layout.setPadding(0, context.dip2px(21f), 0, 0)
         } else {
             val oldVersionStr = """${oldPkgInfo.versionName ?: "N/A"}(${oldPkgInfo.longVersionCode})"""
             val newVersionStr = """${newPkgInfo.versionName ?: "N/A"}(${newPkgInfo.longVersionCode})"""
-            sb.append("${context.resources.getString(R.string.package_name)}:\n")
+            sb.append("${context.resources.getString(R.string.application_details)}:\n")
+                .append("${context.resources.getString(R.string.package_name)}:\n")
                 .append("  $pkgName\n")
-                .append("${context.resources.getString(R.string.version_change)}:\n")
-                .append(" -$oldVersionStr", redSpan, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+                .append("${context.resources.getString(R.string.version)}:\n")
+                .append(" -$oldVersionStr", ForegroundColorSpan(ThemeUtil.colorRed), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
                 .append('\n')
-                .append(" +$newVersionStr", greenSpan, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+                .append(" +$newVersionStr", ForegroundColorSpan(ThemeUtil.colorGreen), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
             layout.setPadding(0, context.dip2px(45f), 0, 0)
         }
         textView.text = sb
