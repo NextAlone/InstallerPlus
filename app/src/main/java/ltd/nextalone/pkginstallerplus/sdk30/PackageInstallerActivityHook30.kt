@@ -72,6 +72,9 @@ object PackageInstallerActivityHook30 {
                 .append("${context.resources.getString(R.string.version)}:\n")
                 .append(" +$oldVersionStr", ForegroundColorSpan(ThemeUtil.colorGreen), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
             layout.setPadding(0, install.height, 0, 0)
+            textView.text = sb
+            layout.addView(textView, ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT))
+            (install.parent as ViewGroup).addView(layout)
         } else {
             val updateId = activity.resources.getIdentifier("install_confirm_question_update", "id", "com.android.packageinstaller")
             val update: View? = activity.findViewById(updateId)
@@ -88,9 +91,13 @@ object PackageInstallerActivityHook30 {
             } else {
                 layout.setPadding(0, context.dip2px(45f), 0, 0)
             }
+            textView.text = sb
+            layout.addView(textView, ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT))
+            if (update != null) {
+                (update.parent as ViewGroup).addView(layout)
+            } else {
+                (install.parent as ViewGroup).addView(layout)
+            }
         }
-        textView.text = sb
-        layout.addView(textView, ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT))
-        (install.parent as ViewGroup).addView(layout)
     }
 }
