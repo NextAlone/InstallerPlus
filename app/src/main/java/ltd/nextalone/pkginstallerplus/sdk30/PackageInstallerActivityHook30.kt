@@ -31,10 +31,16 @@ object PackageInstallerActivityHook30 {
                     override fun afterHookedMethod(param: MethodHookParam) {
                         val ctx: Activity = param.thisObject as Activity
                         injectModuleResources(ctx.resources)
-                        val confirmId = ctx.resources.getIdentifier("install_confirm_question_update", "id", "com.android.packageinstaller")
-                        val confirm: View? = ctx.findViewById(confirmId)
-                        if (confirm != null) {
-                            replaceSpacerWithInfoView(confirm, ctx)
+                        val installId = ctx.resources.getIdentifier("install_confirm_question", "id", "com.android.packageinstaller")
+                        val install: View? = ctx.findViewById(installId)
+                        if (install != null) {
+                            Thread {
+                                Thread.sleep(50)
+                                ctx.runOnUiThread {
+                                    replaceSpacerWithInfoView(install, ctx)
+
+                                }
+                            }.start()
                         } else {
                             Log.e(TAG, "confirm view not found")
                         }
@@ -44,8 +50,8 @@ object PackageInstallerActivityHook30 {
     }
 
     @RequiresApi(Build.VERSION_CODES.P)
-    fun replaceSpacerWithInfoView(confirm: View, activity: Activity) {
-        val context = confirm.context
+    fun replaceSpacerWithInfoView(install: View, activity: Activity) {
+        val context = install.context
         val textView = TextView(context)
         textView.setTextIsSelectable(true)
         textView.typeface = Typeface.MONOSPACE
@@ -66,8 +72,10 @@ object PackageInstallerActivityHook30 {
                 .append('\n')
                 .append("${context.resources.getString(R.string.version)}:\n")
                 .append(" +$oldVersionStr", ForegroundColorSpan(ThemeUtil.colorGreen), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-            layout.setPadding(0, context.dip2px(21f), 0, 0)
+            layout.setPadding(0, install.height, 0, 0)
         } else {
+            val updateId = activity.resources.getIdentifier("install_confirm_question_update", "id", "com.android.packageinstaller")
+            val update: View? = activity.findViewById(updateId)
             val oldVersionStr = """${oldPkgInfo.versionName ?: "N/A"}(${oldPkgInfo.longVersionCode})"""
             val newVersionStr = """${newPkgInfo.versionName ?: "N/A"}(${newPkgInfo.longVersionCode})"""
             sb.append("${context.resources.getString(R.string.package_name)}:\n")
@@ -76,10 +84,14 @@ object PackageInstallerActivityHook30 {
                 .append(" -$oldVersionStr", ForegroundColorSpan(ThemeUtil.colorRed), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
                 .append('\n')
                 .append(" +$newVersionStr", ForegroundColorSpan(ThemeUtil.colorGreen), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-            layout.setPadding(0, context.dip2px(45f), 0, 0)
+            if (update != null) {
+                layout.setPadding(0, update.height, 0, 0)
+            } else {
+                layout.setPadding(0, context.dip2px(45f), 0, 0)
+            }
         }
         textView.text = sb
         layout.addView(textView, ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT))
-        (confirm.parent as ViewGroup).addView(layout)
+        (install.parent as ViewGroup).addView(layout)
     }
 }
