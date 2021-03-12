@@ -35,10 +35,9 @@ object PackageInstallerActivityHook30 {
                         val install: View? = ctx.findViewById(installId)
                         if (install != null) {
                             Thread {
-                                Thread.sleep(50)
+                                Thread.sleep(100)
                                 ctx.runOnUiThread {
                                     replaceSpacerWithInfoView(install, ctx)
-
                                 }
                             }.start()
                         } else {
