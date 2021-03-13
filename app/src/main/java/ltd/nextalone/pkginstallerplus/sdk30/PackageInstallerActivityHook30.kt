@@ -9,16 +9,13 @@ import android.os.Build
 import android.text.SpannableStringBuilder
 import android.text.Spanned
 import android.text.style.ForegroundColorSpan
-import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.annotation.RequiresApi
-import de.robv.android.xposed.XposedHelpers.getObjectField
 import ltd.nextalone.pkginstallerplus.HookEntry.injectModuleResources
 import ltd.nextalone.pkginstallerplus.R
-import ltd.nextalone.pkginstallerplus.TAG
 import ltd.nextalone.pkginstallerplus.dip2px
 import ltd.nextalone.pkginstallerplus.utils.*
 
@@ -43,12 +40,7 @@ object PackageInstallerActivityHook30 {
             injectModuleResources(ctx.resources)
             "com.android.packageinstaller.handheld.UninstallAlertDialogFragment".clazz?.method("onCreateDialog")?.hookAfter { it2 ->
                 val dialog = it2.result as AlertDialog
-                Thread {
-                    Thread.sleep(100)
-                    ctx.runOnUiThread {
-                        addUninstallDetails(ctx, dialog)
-                    }
-                }.start()
+                addUninstallDetails(ctx, dialog)
             }
         }
     }
@@ -59,7 +51,7 @@ object PackageInstallerActivityHook30 {
         textView.setTextIsSelectable(true)
         textView.typeface = Typeface.MONOSPACE
         val layout = LinearLayout(activity)
-        val newPkgInfo: PackageInfo = getObjectField(activity, "mPkgInfo") as PackageInfo
+        val newPkgInfo: PackageInfo = activity.get("mPkgInfo") as PackageInfo
         val pkgName = newPkgInfo.packageName
         val oldPkgInfo = try {
             activity.packageManager.getPackageInfo(pkgName, PackageManager.MATCH_UNINSTALLED_PACKAGES)
@@ -68,8 +60,7 @@ object PackageInstallerActivityHook30 {
         }
         val sb = SpannableStringBuilder()
         if (oldPkgInfo == null) {
-            val installId = activity.resources.getIdentifier("install_confirm_question", "id", "com.android.packageinstaller")
-            val install: View? = activity.findViewById(installId)
+            val install: View? = activity.findHostView("install_confirm_question")
             val oldVersionStr = (newPkgInfo.versionName ?: "N/A") + "(" + newPkgInfo.longVersionCode + ")"
             sb.append("${activity.resources.getString(R.string.package_name)}:\n")
                 .append(" +$pkgName", ForegroundColorSpan(ThemeUtil.colorGreen), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
@@ -83,8 +74,7 @@ object PackageInstallerActivityHook30 {
                 (install.parent as ViewGroup).addView(layout)
             }
         } else {
-            val updateId = activity.resources.getIdentifier("install_confirm_question_update", "id", "com.android.packageinstaller")
-            val update: View? = activity.findViewById(updateId)
+            val update: View? = activity.findHostView("install_confirm_question_update")
             val oldVersionStr = """${oldPkgInfo.versionName ?: "N/A"}(${oldPkgInfo.longVersionCode})"""
             val newVersionStr = """${newPkgInfo.versionName ?: "N/A"}(${newPkgInfo.longVersionCode})"""
             sb.append("${activity.resources.getString(R.string.package_name)}:\n")
@@ -105,12 +95,11 @@ object PackageInstallerActivityHook30 {
 
     @RequiresApi(Build.VERSION_CODES.P)
     fun addUninstallDetails(activity: Activity, dialog: AlertDialog) {
-        Log.i(TAG, "addUninstallDetails: ${dialog.get("mAlertController")?.get("message")}")
         val textView = TextView(activity)
         textView.setTextIsSelectable(true)
         textView.typeface = Typeface.MONOSPACE
         val layout = LinearLayout(activity)
-        val packageName = getObjectField(activity, "mPackageName") as String
+        val packageName = activity.get("mPackageName") as String
         val oldPkgInfo = try {
             activity.packageManager.getPackageInfo(packageName, PackageManager.MATCH_UNINSTALLED_PACKAGES)
         } catch (e: PackageManager.NameNotFoundException) {
@@ -124,10 +113,10 @@ object PackageInstallerActivityHook30 {
                 .append('\n')
                 .append("${activity.resources.getString(R.string.version)}:\n")
                 .append(" -$oldVersionStr", ForegroundColorSpan(ThemeUtil.colorRed), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-            layout.setPadding(0, activity.dip2px(21f), 0, 0)
+            layout.setPadding(activity.dip2px(24f), 0, activity.dip2px(24f), 0)
             textView.text = sb
             layout.addView(textView, ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT))
-            dialog.setMessage("要卸载此应用吗?\n$sb")
+            dialog.setView(layout)
         }
     }
 }
