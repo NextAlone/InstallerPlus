@@ -98,7 +98,8 @@ object PackageInstallerActivityHook30 {
         textView.setTextIsSelectable(true)
         textView.typeface = Typeface.MONOSPACE
         val layout = LinearLayout(activity)
-        val packageName = activity.get("mPackageName") as String
+        if (activity.taskId == -1) return
+        val packageName = activity.get("mDialogInfo")?.get("appInfo")?.get("packageName") as String
         val oldPkgInfo = try {
             activity.packageManager.getPackageInfo(packageName, PackageManager.MATCH_UNINSTALLED_PACKAGES)
         } catch (e: PackageManager.NameNotFoundException) {
