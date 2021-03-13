@@ -1,5 +1,6 @@
 package ltd.nextalone.pkginstallerplus;
 
+import static ltd.nextalone.pkginstallerplus.utils.LogUtilsKt.*;
 import static ltd.nextalone.pkginstallerplus.utils.ReflectUtilsKt.iGetObjectOrNull;
 
 import android.annotation.SuppressLint;
@@ -7,7 +8,6 @@ import android.content.res.AssetManager;
 import android.content.res.Resources;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
-import android.util.Log;
 import dalvik.system.BaseDexClassLoader;
 import de.robv.android.xposed.IXposedHookLoadPackage;
 import de.robv.android.xposed.callbacks.XC_LoadPackage;
@@ -28,7 +28,7 @@ public class HookEntry implements IXposedHookLoadPackage {
     private static long sResInjectEndTime = 0;
 
     private static void initializeHookInternal(LoadPackageParam lpparam) {
-        Log.d(TAG, "Hooked");
+        logDebug("Hooked");
         try {
             lpClassLoader = lpparam.classLoader;
             if (VERSION.SDK_INT >= VERSION_CODES.P) {
@@ -41,7 +41,7 @@ public class HookEntry implements IXposedHookLoadPackage {
                 PackageInstallerActivityHook.INSTANCE.initOnce();
             } catch (Exception e1) {
                 e.addSuppressed(e1);
-                Log.e(TAG, "initializeHookInternal: ", e);
+                logThrowable("initializeHookInternal: ", e);
             }
         }
     }
@@ -93,13 +93,13 @@ public class HookEntry implements IXposedHookLoadPackage {
             addAssetPath.setAccessible(true);
             int cookie = (int) addAssetPath.invoke(assets, sModulePath);
             try {
-                Log.d(TAG, "injectModuleResources: " + res.getString(R.string.res_inject_success));
+                logDetail("injectModuleResources", res.getString(R.string.res_inject_success));
                 if (sResInjectEndTime == 0) {
                     sResInjectEndTime = System.currentTimeMillis();
                 }
             } catch (Resources.NotFoundException e) {
-                Log.e(TAG, "Fatal: injectModuleResources: test injection failure!");
-                Log.e(TAG, "injectModuleResources: cookie=" + cookie + ", path=" + sModulePath + ", loader=" + myClassLoader);
+                logError("Fatal: injectModuleResources: test injection failure!");
+                logError("injectModuleResources: cookie=" + cookie + ", path=" + sModulePath + ", loader=" + myClassLoader);
                 long length = -1;
                 boolean read = false;
                 boolean exist = false;
@@ -111,18 +111,18 @@ public class HookEntry implements IXposedHookLoadPackage {
                     length = f.length();
                     read = f.canRead();
                 } catch (Throwable e2) {
-                    Log.e(TAG, String.valueOf(e2));
+                    logError(String.valueOf(e2));
                 }
-                Log.e(TAG, "sModulePath: exists = " + exist + ", isDirectory = " + isDir + ", canRead = " + read + ", fileLength = " + length);
+                logError("sModulePath: exists = " + exist + ", isDirectory = " + isDir + ", canRead = " + read + ", fileLength = " + length);
             }
         } catch (Exception e) {
-            Log.e(TAG, String.valueOf(e));
+            logError(String.valueOf(e));
         }
     }
 
     @Override
     public void handleLoadPackage(XC_LoadPackage.LoadPackageParam lpparam) throws Throwable {
-        Log.d(TAG, "handleLoadPackage: " + lpparam.packageName);
+        logDetail("handleLoadPackage", lpparam.packageName);
         if ("com.google.android.packageinstaller".equals(lpparam.packageName)
             || "com.android.packageinstaller".equals(lpparam.packageName)) {
             if (!sInitialized) {

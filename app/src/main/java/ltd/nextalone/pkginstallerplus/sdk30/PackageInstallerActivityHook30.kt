@@ -6,7 +6,6 @@ import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.graphics.Typeface
 import android.os.Build
-import android.os.Bundle
 import android.text.SpannableStringBuilder
 import android.text.Spanned
 import android.text.style.ForegroundColorSpan
@@ -42,7 +41,7 @@ object PackageInstallerActivityHook30 {
         "com.android.packageinstaller.UninstallerActivity".clazz?.method("showConfirmationDialog")?.hookBefore {
             val ctx: Activity = it.thisObject as Activity
             injectModuleResources(ctx.resources)
-            "com.android.packageinstaller.handheld.UninstallAlertDialogFragment".clazz?.method("onCreateDialog", Bundle::class.java)?.hookAfter { it2 ->
+            "com.android.packageinstaller.handheld.UninstallAlertDialogFragment".clazz?.method("onCreateDialog")?.hookAfter { it2 ->
                 val dialog = it2.result as AlertDialog
                 Thread {
                     Thread.sleep(100)
