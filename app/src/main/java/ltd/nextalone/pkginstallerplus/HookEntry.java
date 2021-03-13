@@ -1,6 +1,6 @@
 package ltd.nextalone.pkginstallerplus;
 
-import static ltd.nextalone.pkginstallerplus.UtilsKt.iget_object_or_null;
+import static ltd.nextalone.pkginstallerplus.utils.ReflectUtilsKt.iGetObjectOrNull;
 
 import android.annotation.SuppressLint;
 import android.content.res.AssetManager;
@@ -17,12 +17,11 @@ import ltd.nextalone.pkginstallerplus.sdk30.PackageInstallerActivityHook30;
 public class HookEntry implements IXposedHookLoadPackage {
 
     private static final String TAG = "NextAlone";
-
+    public static ClassLoader classLoader;
     private static boolean sInitialized = false;
     private static String sModulePath = null;
     private static long sResInjectBeginTime = 0;
     private static long sResInjectEndTime = 0;
-    private static ClassLoader classLoader;
 
     private static void initializeHookInternal(XC_LoadPackage.LoadPackageParam lpparam) {
         Log.d(TAG, "Hooked");
@@ -57,15 +56,15 @@ public class HookEntry implements IXposedHookLoadPackage {
                 }
                 String modulePath = null;
                 BaseDexClassLoader pcl = (BaseDexClassLoader) classLoader;
-                Object pathList = iget_object_or_null(pcl, "pathList");
-                Object[] dexElements = (Object[]) iget_object_or_null(pathList, "dexElements");
+                Object pathList = iGetObjectOrNull(pcl, "pathList");
+                Object[] dexElements = (Object[]) iGetObjectOrNull(pathList, "dexElements");
                 for (Object element : dexElements) {
-                    File file = (File) iget_object_or_null(element, "path");
+                    File file = (File) iGetObjectOrNull(element, "path");
                     if (file == null || file.isDirectory()) {
-                        file = (File) iget_object_or_null(element, "zip");
+                        file = (File) iGetObjectOrNull(element, "zip");
                     }
                     if (file == null || file.isDirectory()) {
-                        file = (File) iget_object_or_null(element, "file");
+                        file = (File) iGetObjectOrNull(element, "file");
                     }
                     if (file != null && !file.isDirectory()) {
                         String path = file.getPath();

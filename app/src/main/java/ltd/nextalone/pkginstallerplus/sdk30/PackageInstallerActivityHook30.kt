@@ -11,59 +11,49 @@ import android.os.Bundle
 import android.text.SpannableStringBuilder
 import android.text.Spanned
 import android.text.style.ForegroundColorSpan
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.annotation.RequiresApi
-import de.robv.android.xposed.XC_MethodHook
 import de.robv.android.xposed.XposedHelpers.getObjectField
-import ltd.nextalone.pkginstallerplus.*
 import ltd.nextalone.pkginstallerplus.HookEntry.injectModuleResources
+import ltd.nextalone.pkginstallerplus.R
+import ltd.nextalone.pkginstallerplus.TAG
+import ltd.nextalone.pkginstallerplus.dip2px
+import ltd.nextalone.pkginstallerplus.utils.*
 
 
 object PackageInstallerActivityHook30 {
 
+    @RequiresApi(Build.VERSION_CODES.P)
     @SuppressLint("PrivateApi")
     fun initOnce(cl: ClassLoader) {
-        if (cl.hasClass("com.android.packageinstaller.PackageInstallerActivity")) {
-            cl.loadClass("com.android.packageinstaller.PackageInstallerActivity")
-                .getDeclaredMethod("startInstallConfirm").hook(object : XC_MethodHook() {
-                    @RequiresApi(Build.VERSION_CODES.P)
-                    override fun afterHookedMethod(param: MethodHookParam) {
-                        val ctx: Activity = param.thisObject as Activity
-                        injectModuleResources(ctx.resources)
-                        Thread {
-                            Thread.sleep(100)
-                            ctx.runOnUiThread {
-                                addInstallDetails(ctx)
-                            }
-                        }.start()
-                    }
-                })
+        "com.android.packageinstaller.PackageInstallerActivity".clazz?.method("startInstallConfirm")?.hookAfter {
+            val ctx: Activity = it.thisObject as Activity
+            injectModuleResources(ctx.resources)
+            Thread {
+                Thread.sleep(100)
+                ctx.runOnUiThread {
+                    addInstallDetails(ctx)
+                }
+            }.start()
         }
-        if (cl.hasClass("com.android.packageinstaller.UninstallerActivity")) {
-            cl.loadClass("com.android.packageinstaller.UninstallerActivity")
-                .getDeclaredMethod("showConfirmationDialog").hook(object : XC_MethodHook() {
-                    @RequiresApi(Build.VERSION_CODES.P)
-                    override fun beforeHookedMethod(param: MethodHookParam) {
-                        val ctx: Activity = param.thisObject as Activity
-                        injectModuleResources(ctx.resources)
-                        cl.loadClass("com.android.packageinstaller.handheld.UninstallAlertDialogFragment")
-                            .getDeclaredMethod("onCreateDialog", Bundle::class.java).hook(object : XC_MethodHook() {
-                                override fun afterHookedMethod(param: MethodHookParam) {
-                                    val dialog = param.result as AlertDialog
-                                    Thread {
-                                        Thread.sleep(100)
-                                        ctx.runOnUiThread {
-                                            addUninstallDetails(ctx, dialog)
-                                        }
-                                    }.start()
-                                }
-                            })
 
+
+        "com.android.packageinstaller.UninstallerActivity".clazz?.method("showConfirmationDialog")?.hookBefore {
+            val ctx: Activity = it.thisObject as Activity
+            injectModuleResources(ctx.resources)
+            "com.android.packageinstaller.handheld.UninstallAlertDialogFragment".clazz?.method("onCreateDialog", Bundle::class.java)?.hookAfter { it2 ->
+                val dialog = it2.result as AlertDialog
+                Thread {
+                    Thread.sleep(100)
+                    ctx.runOnUiThread {
+                        addUninstallDetails(ctx, dialog)
                     }
-                })
+                }.start()
+            }
         }
     }
 
@@ -119,6 +109,7 @@ object PackageInstallerActivityHook30 {
 
     @RequiresApi(Build.VERSION_CODES.P)
     fun addUninstallDetails(activity: Activity, dialog: AlertDialog) {
+        Log.i(TAG, "addUninstallDetails: ${dialog.get("mAlertController")?.get("message")}")
         val textView = TextView(activity)
         textView.setTextIsSelectable(true)
         textView.typeface = Typeface.MONOSPACE

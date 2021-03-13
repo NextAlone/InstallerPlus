@@ -1,4 +1,4 @@
-package ltd.nextalone.pkginstallerplus
+package ltd.nextalone.pkginstallerplus.utils
 
 
 object ThemeUtil {

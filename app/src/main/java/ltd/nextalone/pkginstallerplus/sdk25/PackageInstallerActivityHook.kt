@@ -12,32 +12,34 @@ import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import de.robv.android.xposed.XC_MethodHook
 import de.robv.android.xposed.XposedHelpers.getObjectField
-import ltd.nextalone.pkginstallerplus.*
+import ltd.nextalone.pkginstallerplus.TAG
+import ltd.nextalone.pkginstallerplus.WRAP_CONTENT
+import ltd.nextalone.pkginstallerplus.dip2px
+import ltd.nextalone.pkginstallerplus.getId
+import ltd.nextalone.pkginstallerplus.utils.ThemeUtil
+import ltd.nextalone.pkginstallerplus.utils.clazz
+import ltd.nextalone.pkginstallerplus.utils.hookAfter
+import ltd.nextalone.pkginstallerplus.utils.method
 
 object PackageInstallerActivityHook {
 
     @SuppressLint("PrivateApi")
     fun initOnce(cl: ClassLoader) {
-        if (cl.hasClass("com.android.packageinstaller.PackageInstallerActivity")) {
-            cl.loadClass("com.android.packageinstaller.PackageInstallerActivity")
-                .getDeclaredMethod("startInstallConfirm").hook(object : XC_MethodHook() {
-                    override fun afterHookedMethod(param: MethodHookParam) {
-                        val ctx: Activity = param.thisObject as Activity
-                        val spacerId = ctx.getId("spacer")
-                        val spacer: View? = ctx.findViewById(spacerId)
-                        if (spacer != null) {
-                            replaceSpacerWithInfoView(spacer, ctx)
-                        } else {
-                            Log.e(TAG, "spacer view not found")
-                        }
-                    }
-                })
+        "com.android.packageinstaller.PackageInstallerActivity".clazz?.method("startInstallConfirm")?.hookAfter {
+            val ctx: Activity = it.thisObject as Activity
+            val spacerId = ctx.getId("spacer")
+            val spacer: View? = ctx.findViewById(spacerId)
+            if (spacer != null) {
+                replaceSpacerWithInfoView(spacer, ctx)
+            } else {
+                Log.e(TAG, "spacer view not found")
+            }
         }
     }
 
-    fun replaceSpacerWithInfoView(spacer: View, activity: Activity) {
+
+    private fun replaceSpacerWithInfoView(spacer: View, activity: Activity) {
         val lp: ViewGroup.LayoutParams = spacer.layoutParams
         val parent: ViewGroup = spacer.parent as ViewGroup
         val idx = parent.indexOfChild(spacer)
