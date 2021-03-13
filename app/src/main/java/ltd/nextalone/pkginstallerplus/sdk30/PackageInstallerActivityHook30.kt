@@ -85,7 +85,6 @@ object PackageInstallerActivityHook30 {
                 .append(" +$newVersionStr", ForegroundColorSpan(ThemeUtil.colorGreen), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
             if (update != null) {
                 layout.setPadding(0, update.height, 0, 0)
-                layout.setPadding(0, activity.dip2px(45f), 0, 0)
                 textView.text = sb
                 layout.addView(textView, ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT))
                 (update.parent as ViewGroup).addView(layout)
