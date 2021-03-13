@@ -11,7 +11,7 @@ import java.lang.reflect.Method
 
 internal val String.clazz: Class<*>?
     get() = try {
-        HookEntry.classLoader.loadClass(this)
+        HookEntry.lpClassLoader.loadClass(this)
     } catch (e: ClassNotFoundException) {
         null
     }

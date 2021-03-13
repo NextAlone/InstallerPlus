@@ -25,7 +25,7 @@ import ltd.nextalone.pkginstallerplus.utils.method
 object PackageInstallerActivityHook {
 
     @SuppressLint("PrivateApi")
-    fun initOnce(cl: ClassLoader) {
+    fun initOnce() {
         "com.android.packageinstaller.PackageInstallerActivity".clazz?.method("startInstallConfirm")?.hookAfter {
             val ctx: Activity = it.thisObject as Activity
             val spacerId = ctx.getId("spacer")

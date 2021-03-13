@@ -1,6 +1,5 @@
 package ltd.nextalone.pkginstallerplus.sdk30
 
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.pm.PackageInfo
@@ -28,8 +27,7 @@ import ltd.nextalone.pkginstallerplus.utils.*
 object PackageInstallerActivityHook30 {
 
     @RequiresApi(Build.VERSION_CODES.P)
-    @SuppressLint("PrivateApi")
-    fun initOnce(cl: ClassLoader) {
+    fun initOnce() {
         "com.android.packageinstaller.PackageInstallerActivity".clazz?.method("startInstallConfirm")?.hookAfter {
             val ctx: Activity = it.thisObject as Activity
             injectModuleResources(ctx.resources)
@@ -40,7 +38,6 @@ object PackageInstallerActivityHook30 {
                 }
             }.start()
         }
-
 
         "com.android.packageinstaller.UninstallerActivity".clazz?.method("showConfirmationDialog")?.hookBefore {
             val ctx: Activity = it.thisObject as Activity

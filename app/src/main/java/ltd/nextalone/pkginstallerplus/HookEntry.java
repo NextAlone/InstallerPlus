@@ -5,10 +5,13 @@ import static ltd.nextalone.pkginstallerplus.utils.ReflectUtilsKt.iGetObjectOrNu
 import android.annotation.SuppressLint;
 import android.content.res.AssetManager;
 import android.content.res.Resources;
+import android.os.Build.VERSION;
+import android.os.Build.VERSION_CODES;
 import android.util.Log;
 import dalvik.system.BaseDexClassLoader;
 import de.robv.android.xposed.IXposedHookLoadPackage;
 import de.robv.android.xposed.callbacks.XC_LoadPackage;
+import de.robv.android.xposed.callbacks.XC_LoadPackage.LoadPackageParam;
 import java.io.File;
 import java.lang.reflect.Method;
 import ltd.nextalone.pkginstallerplus.sdk25.PackageInstallerActivityHook;
@@ -17,19 +20,25 @@ import ltd.nextalone.pkginstallerplus.sdk30.PackageInstallerActivityHook30;
 public class HookEntry implements IXposedHookLoadPackage {
 
     private static final String TAG = "NextAlone";
-    public static ClassLoader classLoader;
+    public static ClassLoader myClassLoader;
+    public static ClassLoader lpClassLoader;
     private static boolean sInitialized = false;
     private static String sModulePath = null;
     private static long sResInjectBeginTime = 0;
     private static long sResInjectEndTime = 0;
 
-    private static void initializeHookInternal(XC_LoadPackage.LoadPackageParam lpparam) {
+    private static void initializeHookInternal(LoadPackageParam lpparam) {
         Log.d(TAG, "Hooked");
         try {
-            PackageInstallerActivityHook30.INSTANCE.initOnce(lpparam.classLoader);
+            lpClassLoader = lpparam.classLoader;
+            if (VERSION.SDK_INT >= VERSION_CODES.P) {
+                PackageInstallerActivityHook30.INSTANCE.initOnce();
+            } else {
+                throw new UnsupportedClassVersionError();
+            }
         } catch (Exception e) {
             try {
-                PackageInstallerActivityHook.INSTANCE.initOnce(lpparam.classLoader);
+                PackageInstallerActivityHook.INSTANCE.initOnce();
             } catch (Exception e1) {
                 e.addSuppressed(e1);
                 Log.e(TAG, "initializeHookInternal: ", e);
@@ -47,15 +56,15 @@ public class HookEntry implements IXposedHookLoadPackage {
         } catch (Resources.NotFoundException ignored) {
         }
         try {
-            if (classLoader == null) {
-                classLoader = HookEntry.class.getClassLoader();
+            if (myClassLoader == null) {
+                myClassLoader = HookEntry.class.getClassLoader();
             }
             if (sModulePath == null) {
                 if (sResInjectBeginTime == 0) {
                     sResInjectBeginTime = System.currentTimeMillis();
                 }
                 String modulePath = null;
-                BaseDexClassLoader pcl = (BaseDexClassLoader) classLoader;
+                BaseDexClassLoader pcl = (BaseDexClassLoader) myClassLoader;
                 Object pathList = iGetObjectOrNull(pcl, "pathList");
                 Object[] dexElements = (Object[]) iGetObjectOrNull(pathList, "dexElements");
                 for (Object element : dexElements) {
@@ -74,7 +83,7 @@ public class HookEntry implements IXposedHookLoadPackage {
                     }
                 }
                 if (modulePath == null) {
-                    throw new RuntimeException("get module path failed, loader=" + classLoader);
+                    throw new RuntimeException("get module path failed, loader=" + myClassLoader);
                 }
                 sModulePath = modulePath;
             }
@@ -90,7 +99,7 @@ public class HookEntry implements IXposedHookLoadPackage {
                 }
             } catch (Resources.NotFoundException e) {
                 Log.e(TAG, "Fatal: injectModuleResources: test injection failure!");
-                Log.e(TAG, "injectModuleResources: cookie=" + cookie + ", path=" + sModulePath + ", loader=" + classLoader);
+                Log.e(TAG, "injectModuleResources: cookie=" + cookie + ", path=" + sModulePath + ", loader=" + myClassLoader);
                 long length = -1;
                 boolean read = false;
                 boolean exist = false;
