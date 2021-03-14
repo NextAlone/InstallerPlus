@@ -11,7 +11,8 @@
 Compatible with AOSP-like installer,been tested in:  
 
 1. OOS Android Q
-2. Pixel Experience 11
+2. HOS Android 7.1.1
+3. Pixel Experience 11
 
 ## Repo License
 

@@ -11,7 +11,8 @@
 兼容类原生安装管理器,已在下列ROM测试:
 
 1. OOS Android Q
-2. Pixel Experience 11
+2. HOS Android 7.1.1
+3. Pixel Experience 11
 
 ## 许可证
 
