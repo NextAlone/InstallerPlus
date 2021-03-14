@@ -14,7 +14,7 @@
             android:value="true" />
         <meta-data
             android:name="xposeddescription"
-            android:value="Add extra features to the package installer." />
+            android:value="Add package info for Package Installer when Installing/Updating/Uninstalling[WIP]." />
         <meta-data
             android:name="xposedminversion"
             android:value="82" />
