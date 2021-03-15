@@ -4,7 +4,7 @@
 
 ## Introduction
 
-- Add package info display for Package Installer when Installing/Updating/Uninstalling(WIP) apps
+- Show app's package info for Package Installer.
 
 ## Compatibility
 

@@ -4,7 +4,7 @@
 
 ## 介绍
 
-- 为Package Installer提供在安装/更新/卸载(WIP)app时的安装包详情显示
+- 为Package Installer提供安装包详情显示
 
 ## 兼容性
 
