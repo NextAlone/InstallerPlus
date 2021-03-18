@@ -1,6 +1,6 @@
 # InstallerPlus(Installer++)
 
-![Tag](https://img.shields.io/github/v/tag/Nextalone/InstallerPlus) [[English Version]](README.md)
+![Tag](https://img.shields.io/github/v/tag/Nextalone/InstallerPlus) [[English Version]] [![CI](https://github.com/NextAlone/InstallerPlus/actions/workflows/autoci.yml/badge.svg?branch=main)](https://github.com/NextAlone/InstallerPlus/actions/workflows/autoci.yml) (README.md)
 
 ## 介绍
 

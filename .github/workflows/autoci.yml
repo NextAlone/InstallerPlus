@@ -1,4 +1,4 @@
-name: appCI
+name: autoCI
 
 on:
   push:
