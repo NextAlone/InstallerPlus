@@ -1,21 +1,27 @@
 package ltd.nextalone.pkginstallerplus;
 
-import static ltd.nextalone.pkginstallerplus.utils.LogUtilsKt.*;
-import static ltd.nextalone.pkginstallerplus.utils.ReflectUtilsKt.iGetObjectOrNull;
-
 import android.annotation.SuppressLint;
 import android.content.res.AssetManager;
 import android.content.res.Resources;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
+
+import java.io.File;
+import java.lang.reflect.Method;
+
 import dalvik.system.BaseDexClassLoader;
 import de.robv.android.xposed.IXposedHookLoadPackage;
 import de.robv.android.xposed.callbacks.XC_LoadPackage;
 import de.robv.android.xposed.callbacks.XC_LoadPackage.LoadPackageParam;
-import java.io.File;
-import java.lang.reflect.Method;
 import ltd.nextalone.pkginstallerplus.sdk25.PackageInstallerActivityHook;
 import ltd.nextalone.pkginstallerplus.sdk30.PackageInstallerActivityHook30;
+import ltd.nextalone.pkginstallerplus.sdk31.PackageInstallerActivityHook31;
+
+import static ltd.nextalone.pkginstallerplus.utils.LogUtilsKt.logDebug;
+import static ltd.nextalone.pkginstallerplus.utils.LogUtilsKt.logDetail;
+import static ltd.nextalone.pkginstallerplus.utils.LogUtilsKt.logError;
+import static ltd.nextalone.pkginstallerplus.utils.LogUtilsKt.logThrowable;
+import static ltd.nextalone.pkginstallerplus.utils.ReflectUtilsKt.iGetObjectOrNull;
 
 public class HookEntry implements IXposedHookLoadPackage {
 
@@ -31,21 +37,29 @@ public class HookEntry implements IXposedHookLoadPackage {
         logDebug("Hooked");
         try {
             lpClassLoader = lpparam.classLoader;
-            if (VERSION.SDK_INT >= VERSION_CODES.P) {
-                PackageInstallerActivityHook30.INSTANCE.initOnce();
+            if (VERSION.SDK_INT >= VERSION_CODES.S) {
+                PackageInstallerActivityHook31.INSTANCE.initOnce();
             } else {
                 throw new UnsupportedClassVersionError();
             }
         } catch (Exception e) {
             try {
-                PackageInstallerActivityHook.INSTANCE.initOnce();
+                lpClassLoader = lpparam.classLoader;
+                if (VERSION.SDK_INT >= VERSION_CODES.P) {
+                    PackageInstallerActivityHook30.INSTANCE.initOnce();
+                } else {
+                    throw new UnsupportedClassVersionError();
+                }
             } catch (Exception e1) {
-                e.addSuppressed(e1);
-                logThrowable("initializeHookInternal: ", e);
+                try {
+                    PackageInstallerActivityHook.INSTANCE.initOnce();
+                } catch (Exception e2) {
+                    e.addSuppressed(e2);
+                    logThrowable("initializeHookInternal: ", e);
+                }
             }
         }
     }
-
     public static void injectModuleResources(Resources res) {
         if (res == null) {
             return;
