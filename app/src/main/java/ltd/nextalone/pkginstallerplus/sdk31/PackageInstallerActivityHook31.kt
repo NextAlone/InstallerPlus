@@ -73,7 +73,7 @@ object PackageInstallerActivityHook31 {
             val update: View? = activity.findHostView("install_confirm_question_update")
             val oldVersionStr = """${oldPkgInfo.versionName ?: "N/A"}(${oldPkgInfo.longVersionCode})"""
             val newVersionStr = """${newPkgInfo.versionName ?: "N/A"}(${newPkgInfo.longVersionCode})"""
-            sb.append("包名: $pkgName\n版本: $oldVersionStr ⇒ $newVersionStr")
+            sb.append("包名: $pkgName\n版本: $oldVersionStr ➞ $newVersionStr")
             if (update != null) {
                 layout.setPadding(0, update.height, 0, 0)
                 textView.text = sb
