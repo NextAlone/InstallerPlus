@@ -23,7 +23,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Setup JDK 11
         uses: actions/setup-java@v3
@@ -32,7 +32,7 @@ jobs:
           java-version: '11'
 
       - name: Setup Android SDK Tools
-        uses: android-actions/setup-android@v2.0.2
+        uses: android-actions/setup-android@v2
 
       - name: Add local.properties
         run: echo ‘sdk.dir=/usr/local/lib/android/sdk’ >>${{ github.workspace }}/local.properties
@@ -45,7 +45,7 @@ jobs:
 
       - name: Get short SHA
         id: sha7
-        run: echo "::set-output name=sha::$(echo ${GITHUB_SHA} | cut -c1-7)"
+        run: echo "sha=$(echo ${GITHUB_SHA} | cut -c1-7)" >> $GITHUB_SHA
 
       - name: Upload Packages
         uses: actions/upload-artifact@master
