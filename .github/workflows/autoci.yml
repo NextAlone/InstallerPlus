@@ -12,6 +12,12 @@ on:
     branches: [ main ]
   pull_request:
     branches: [ main ]
+  workflow_dispatch:
+    inputs:
+      Compile:
+        description: 'Do Compile'
+        required: false
+        default: 'YES'
 
 jobs:
   build:
