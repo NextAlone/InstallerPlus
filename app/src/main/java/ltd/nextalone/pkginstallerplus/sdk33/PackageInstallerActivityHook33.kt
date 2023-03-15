@@ -1,4 +1,4 @@
-package ltd.nextalone.pkginstallerplus.sdk31
+package ltd.nextalone.pkginstallerplus.sdk33
 
 import android.app.Activity
 import android.app.AlertDialog
@@ -17,8 +17,8 @@ import ltd.nextalone.pkginstallerplus.HookEntry.injectModuleResources
 import ltd.nextalone.pkginstallerplus.dip2px
 import ltd.nextalone.pkginstallerplus.utils.*
 
-@RequiresApi(31)
-object PackageInstallerActivityHook31 {
+@RequiresApi(33)
+object PackageInstallerActivityHook33 {
     fun initOnce() {
         "com.android.packageinstaller.PackageInstallerActivity".clazz?.method("startInstallConfirm")
             ?.hookAfter {
@@ -84,6 +84,7 @@ object PackageInstallerActivityHook31 {
                 .append(oldVersionStr, ForegroundColorSpan(ThemeUtil.colorRed), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
                 .append(" ➞ ")
                 .append(newVersionStr, ForegroundColorSpan(ThemeUtil.colorGreen), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+
             if (update != null) {
                 layout.setPadding(0, update.height, 0, 0)
                 textView.text = sb
