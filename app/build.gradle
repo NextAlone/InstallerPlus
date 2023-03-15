@@ -5,14 +5,14 @@ plugins {
 
 android {
     compileSdk 33
-    buildToolsVersion "31.0.0"
+    buildToolsVersion '33.0.2'
 
     defaultConfig {
         applicationId "ltd.nextalone.pkginstallerplus"
         minSdkVersion 23
-        targetSdkVersion 31
+        targetSdkVersion 33
         versionCode(getTimeStamp.call() as int)
-        versionName "0.7" + (getGitHeadRefsSuffix.call() as String)
+        versionName "0.8" + (getGitHeadRefsSuffix.call() as String)
     }
 
     buildTypes {
@@ -35,6 +35,7 @@ android {
     buildFeatures {
         viewBinding true
     }
+    namespace 'ltd.nextalone.pkginstallerplus'
 }
 
 dependencies {
