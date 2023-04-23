@@ -47,8 +47,8 @@ jobs:
         run: echo "SHA7=$(echo ${GITHUB_SHA} | cut -c1-7)" >> $GITHUB_ENV
 
       - name: Upload Packages
-        uses: actions/upload-artifact@master
+        uses: actions/upload-artifact@v3
         if: success()
         with:
-          name: app-debug-${{ env.SHA7 }}
+          name: InstallerPlus-debug-${{ env.SHA7 }}
           path: ${{ github.workspace }}/app/build/outputs/apk/debug
