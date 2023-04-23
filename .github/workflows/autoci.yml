@@ -44,12 +44,11 @@ jobs:
         run: ./gradlew build
 
       - name: Get short SHA
-        id: sha7
-        run: echo "sha=$(echo ${GITHUB_SHA} | cut -c1-7)" >> $GITHUB_SHA
+        run: echo "SHA7=$(echo ${GITHUB_SHA} | cut -c1-7)" >> $GITHUB_ENV
 
       - name: Upload Packages
         uses: actions/upload-artifact@master
         if: success()
         with:
-          name: app-debug-${{ steps.sha7.outputs.sha }}
+          name: app-debug-${{ env.SHA7 }}
           path: ${{ github.workspace }}/app/build/outputs/apk/debug
