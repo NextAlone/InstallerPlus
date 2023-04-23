@@ -5,6 +5,7 @@ import android.app.AlertDialog
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.graphics.Typeface
+import android.os.UserManager
 import android.text.SpannableStringBuilder
 import android.text.Spanned
 import android.text.style.ForegroundColorSpan
@@ -49,6 +50,7 @@ object PackageInstallerActivityHook33 {
         textView.typeface = Typeface.MONOSPACE
         val layout = LinearLayout(activity)
         val newPkgInfo: PackageInfo = activity.get("mPkgInfo") as PackageInfo
+        val UsrInfo: UserManager = activity.get("mUserManager") as UserManager
         val pkgName = newPkgInfo.packageName
         val oldPkgInfo = try {
             activity.packageManager.getPackageInfo(
@@ -62,7 +64,10 @@ object PackageInstallerActivityHook33 {
         if (oldPkgInfo == null) {
             val install: View? = activity.findHostView("install_confirm_question")
             val oldVersionStr = (newPkgInfo.versionName ?: "N/A") + "(" + newPkgInfo.longVersionCode + ")"
-            sb.append("包名: ")
+            sb.append("安装用户: ")
+                .append(UsrInfo.getUserName())
+                .append('\n')
+                .append("包名: ")
                 .append(pkgName, ForegroundColorSpan(ThemeUtil.colorGreen), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
                 .append('\n')
                 .append("版本: ")
@@ -77,7 +82,10 @@ object PackageInstallerActivityHook33 {
             val update: View? = activity.findHostView("install_confirm_question_update")
             val oldVersionStr = """${oldPkgInfo.versionName ?: "N/A"}(${oldPkgInfo.longVersionCode})"""
             val newVersionStr = """${newPkgInfo.versionName ?: "N/A"}(${newPkgInfo.longVersionCode})"""
-            sb.append("包名: ")
+            sb.append("更新用户: ")
+                .append(UsrInfo.getUserName())
+                .append('\n')
+                .append("包名: ")
                 .append(pkgName, ForegroundColorSpan(ThemeUtil.colorGreen), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
                 .append('\n')
                 .append("版本: ")
@@ -113,18 +121,10 @@ object PackageInstallerActivityHook33 {
         if (oldPkgInfo != null) {
             val oldVersionStr = (oldPkgInfo.versionName ?: "N/A") + "(" + oldPkgInfo.longVersionCode + ")"
             sb.append("包名: ")
-                .append(
-                    packageName,
-                    ForegroundColorSpan(ThemeUtil.colorRed),
-                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
-                )
+                .append(packageName, ForegroundColorSpan(ThemeUtil.colorRed), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
                 .append('\n')
                 .append("版本: ")
-                .append(
-                    oldVersionStr,
-                    ForegroundColorSpan(ThemeUtil.colorRed),
-                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
-                )
+                .append(oldVersionStr, ForegroundColorSpan(ThemeUtil.colorRed), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
             layout.setPadding(activity.dip2px(24f), 0, activity.dip2px(24f), 0)
             textView.text = sb
             layout.addView(textView, ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT))
