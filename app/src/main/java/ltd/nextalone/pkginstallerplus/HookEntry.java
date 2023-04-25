@@ -40,6 +40,7 @@ public class HookEntry implements IXposedHookLoadPackage {
         try {
             lpClassLoader = lpparam.classLoader;
             if (VERSION.SDK_INT >= VERSION_CODES.TIRAMISU) {
+                logDebug("initializeHookApi:33");
                 PackageInstallerActivityHook33.INSTANCE.initOnce();
             } else {
                 throw new UnsupportedClassVersionError();
@@ -48,6 +49,7 @@ public class HookEntry implements IXposedHookLoadPackage {
             try {
                 lpClassLoader = lpparam.classLoader;
                 if (VERSION.SDK_INT >= VERSION_CODES.S) {
+                    logDebug("initializeHookApi:31");
                     PackageInstallerActivityHook31.INSTANCE.initOnce();
                 } else {
                     throw new UnsupportedClassVersionError();
@@ -56,6 +58,7 @@ public class HookEntry implements IXposedHookLoadPackage {
                 try {
                     lpClassLoader = lpparam.classLoader;
                     if (VERSION.SDK_INT >= VERSION_CODES.P) {
+                        logDebug("initializeHookApi:30");
                         PackageInstallerActivityHook30.INSTANCE.initOnce();
                     } else {
                         throw new UnsupportedClassVersionError();

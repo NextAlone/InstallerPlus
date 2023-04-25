@@ -55,8 +55,7 @@ object PackageInstallerActivityHook {
         val newPkgInfo: PackageInfo = getObjectField(activity, "mPkgInfo") as PackageInfo
         val pkgName = newPkgInfo.packageName
         val oldPkgInfo = try {
-            activity.packageManager
-                .getPackageInfo(pkgName, PackageManager.GET_UNINSTALLED_PACKAGES)
+            activity.packageManager.getPackageInfo(pkgName, PackageManager.GET_UNINSTALLED_PACKAGES)
         } catch (e: PackageManager.NameNotFoundException) {
             null
         }
@@ -64,17 +63,14 @@ object PackageInstallerActivityHook {
         val greenSpan = ForegroundColorSpan(ThemeUtil.colorGreen)
         val redSpan = ForegroundColorSpan(ThemeUtil.colorRed)
         if (oldPkgInfo == null) {
-            val oldVersionStr =
-                (newPkgInfo.versionName ?: "N/A") + "(" + newPkgInfo.versionCode + ")"
+            val oldVersionStr = (newPkgInfo.versionName ?: "N/A") + "(" + newPkgInfo.versionCode + ")"
             sb.append("PackageName:\n")
                 .append(" +" + pkgName, greenSpan, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
                 .append('\n')
                 .append(" +" + oldVersionStr, greenSpan, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
         } else {
-            val oldVersionStr = (oldPkgInfo.versionName ?: "N/A") +
-                    "(" + oldPkgInfo.versionCode + ")"
-            val newVersionStr = (newPkgInfo.versionName ?: "N/A") +
-                    "(" + newPkgInfo.versionCode + ")"
+            val oldVersionStr = (oldPkgInfo.versionName ?: "N/A") + "(" + oldPkgInfo.versionCode + ")"
+            val newVersionStr = (newPkgInfo.versionName ?: "N/A") + "(" + newPkgInfo.versionCode + ")"
             sb.append("PackageName:\n")
                 .append("  " + pkgName)
                 .append('\n')

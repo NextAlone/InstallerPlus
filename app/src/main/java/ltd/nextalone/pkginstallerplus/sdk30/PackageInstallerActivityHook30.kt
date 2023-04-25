@@ -19,10 +19,8 @@ import ltd.nextalone.pkginstallerplus.R
 import ltd.nextalone.pkginstallerplus.dip2px
 import ltd.nextalone.pkginstallerplus.utils.*
 
-
+@RequiresApi(30)
 object PackageInstallerActivityHook30 {
-
-    @RequiresApi(Build.VERSION_CODES.P)
     fun initOnce() {
         "com.android.packageinstaller.PackageInstallerActivity".clazz?.method("startInstallConfirm")?.hookAfter {
             val ctx: Activity = it.thisObject as Activity
@@ -45,7 +43,6 @@ object PackageInstallerActivityHook30 {
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.P)
     fun addInstallDetails(activity: Activity) {
         val textView = TextView(activity)
         textView.setTextIsSelectable(true)
@@ -92,7 +89,6 @@ object PackageInstallerActivityHook30 {
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.P)
     fun addUninstallDetails(activity: Activity, dialog: AlertDialog) {
         val textView = TextView(activity)
         textView.setTextIsSelectable(true)
