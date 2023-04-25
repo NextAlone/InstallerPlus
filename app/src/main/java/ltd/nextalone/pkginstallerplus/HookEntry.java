@@ -43,7 +43,7 @@ public class HookEntry implements IXposedHookLoadPackage {
                 logDebug("initializeHookApi:33");
                 PackageInstallerActivityHook33.INSTANCE.initOnce();
             } else {
-                throw new UnsupportedClassVersionError();
+                throw new Exception("UnsupportApiVersionError");
             }
         } catch (Exception e) {
             try {
@@ -52,7 +52,7 @@ public class HookEntry implements IXposedHookLoadPackage {
                     logDebug("initializeHookApi:31");
                     PackageInstallerActivityHook31.INSTANCE.initOnce();
                 } else {
-                    throw new UnsupportedClassVersionError();
+                    throw new Exception("UnsupportApiVersionError");
                 }
             } catch (Exception e1) {
                 try {
@@ -61,7 +61,7 @@ public class HookEntry implements IXposedHookLoadPackage {
                         logDebug("initializeHookApi:30");
                         PackageInstallerActivityHook30.INSTANCE.initOnce();
                     } else {
-                        throw new UnsupportedClassVersionError();
+                        throw new Exception("UnsupportApiVersionError");
                     }
                 } catch (Exception e2) {
                     try {
