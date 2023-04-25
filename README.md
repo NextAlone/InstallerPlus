@@ -5,6 +5,7 @@
 ## Introduction
 
 - Show app's package info for Package Installer.
+- See [features](image/README.md)
 
 ## Compatibility
 

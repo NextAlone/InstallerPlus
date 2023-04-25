@@ -5,6 +5,7 @@
 ## 介绍
 
 - 为Package Installer提供安装包详情显示
+- 详见 [功能列表](image/README_CN.md)
 
 ## 兼容性
 
