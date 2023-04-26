@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="version">版本</string>
-    <string name="package_name">包名</string>
-    <string name="user_name">用户</string>
+    <string name="IPP_info_version">版本</string>
+    <string name="IPP_info_package">包名</string>
+    <string name="IPP_info_user">用户</string>
 </resources>

@@ -75,13 +75,14 @@ public class HookEntry implements IXposedHookLoadPackage, IXposedHookZygoteInit 
             }
         }
     }
+
     public static void injectModuleResources(Resources res) {
         logDebug("injectModuleResources start");
         if (res == null) {
             return;
         }
         try {
-            res.getString(R.string.res_inject_success);
+            res.getString(R.string.IPP_res_inject_success);
             return;
         } catch (Resources.NotFoundException ignored) {
         }
@@ -102,7 +103,7 @@ public class HookEntry implements IXposedHookLoadPackage, IXposedHookZygoteInit 
             addAssetPath.setAccessible(true);
             int cookie = (int) addAssetPath.invoke(assets, sModulePath);
             try {
-                logDetail("injectModuleResources", res.getString(R.string.res_inject_success));
+                logDetail("injectModuleResources", res.getString(R.string.IPP_res_inject_success));
                 if (sResInjectEndTime == 0) {
                     sResInjectEndTime = System.currentTimeMillis();
                 }
