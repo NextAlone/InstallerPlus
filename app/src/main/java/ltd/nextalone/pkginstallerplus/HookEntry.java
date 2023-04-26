@@ -36,7 +36,7 @@ public class HookEntry implements IXposedHookLoadPackage {
     private static long sResInjectEndTime = 0;
 
     private static void initializeHookInternal(LoadPackageParam lpparam) {
-        logDebug("Hooked");
+        logDebug("initializeHookInternal start");
         try {
             lpClassLoader = lpparam.classLoader;
             if (VERSION.SDK_INT >= VERSION_CODES.TIRAMISU) {
@@ -75,6 +75,7 @@ public class HookEntry implements IXposedHookLoadPackage {
         }
     }
     public static void injectModuleResources(Resources res) {
+        logDebug("injectModuleResources start");
         if (res == null) {
             return;
         }
