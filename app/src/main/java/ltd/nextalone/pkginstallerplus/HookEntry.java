@@ -12,6 +12,7 @@ import java.lang.reflect.Method;
 
 import dalvik.system.BaseDexClassLoader;
 import de.robv.android.xposed.IXposedHookLoadPackage;
+import de.robv.android.xposed.IXposedHookZygoteInit;
 import de.robv.android.xposed.callbacks.XC_LoadPackage;
 import de.robv.android.xposed.callbacks.XC_LoadPackage.LoadPackageParam;
 import ltd.nextalone.pkginstallerplus.sdk25.PackageInstallerActivityHook;
@@ -25,7 +26,7 @@ import static ltd.nextalone.pkginstallerplus.utils.LogUtilsKt.logError;
 import static ltd.nextalone.pkginstallerplus.utils.LogUtilsKt.logThrowable;
 import static ltd.nextalone.pkginstallerplus.utils.ReflectUtilsKt.iGetObjectOrNull;
 
-public class HookEntry implements IXposedHookLoadPackage {
+public class HookEntry implements IXposedHookLoadPackage, IXposedHookZygoteInit {
 
     private static final String TAG = "NextAlone";
     public static ClassLoader myClassLoader;
@@ -89,32 +90,11 @@ public class HookEntry implements IXposedHookLoadPackage {
                 myClassLoader = HookEntry.class.getClassLoader();
             }
             if (sModulePath == null) {
-                if (sResInjectBeginTime == 0) {
-                    sResInjectBeginTime = System.currentTimeMillis();
-                }
-                String modulePath = null;
-                BaseDexClassLoader pcl = (BaseDexClassLoader) myClassLoader;
-                Object pathList = iGetObjectOrNull(pcl, "pathList");
-                Object[] dexElements = (Object[]) iGetObjectOrNull(pathList, "dexElements");
-                for (Object element : dexElements) {
-                    File file = (File) iGetObjectOrNull(element, "path");
-                    if (file == null || file.isDirectory()) {
-                        file = (File) iGetObjectOrNull(element, "zip");
-                    }
-                    if (file == null || file.isDirectory()) {
-                        file = (File) iGetObjectOrNull(element, "file");
-                    }
-                    if (file != null && !file.isDirectory()) {
-                        String path = file.getPath();
-                        if (modulePath == null || !modulePath.contains("ltd.nextalone.pkginstallerplus")) {
-                            modulePath = path;
-                        }
-                    }
-                }
-                if (modulePath == null) {
-                    throw new RuntimeException("get module path failed, loader=" + myClassLoader);
-                }
-                sModulePath = modulePath;
+                // should not happen
+                throw new IllegalStateException("sModulePath is null");
+            }
+            if (sResInjectBeginTime == 0) {
+                sResInjectBeginTime = System.currentTimeMillis();
             }
             AssetManager assets = res.getAssets();
             @SuppressLint("DiscouragedPrivateApi")
@@ -159,5 +139,12 @@ public class HookEntry implements IXposedHookLoadPackage {
                 initializeHookInternal(lpparam);
             }
         }
+    }
+
+    @Override
+    public void initZygote(StartupParam startupParam) {
+        String modulePath = startupParam.modulePath;
+        assert modulePath != null;
+        sModulePath = modulePath;
     }
 }
