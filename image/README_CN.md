@@ -6,11 +6,6 @@
 - 包名
 - 版本号
 
-Android 13时:  
-![install_A13](install_A13.png)
-![update_A13](update_A13.png)
-
-Android 13之前:  
-![install](install.png)
-![update](update.png)
-![uninstall](uninstall.png)
+![install](cn_install.png)
+![update](cn_update.png)
+![uninstall](cn_uninstall.png)
