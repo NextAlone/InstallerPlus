@@ -14,7 +14,9 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.annotation.RequiresApi
+
 import ltd.nextalone.pkginstallerplus.HookEntry.injectModuleResources
+import ltd.nextalone.pkginstallerplus.R
 import ltd.nextalone.pkginstallerplus.dip2px
 import ltd.nextalone.pkginstallerplus.utils.*
 
@@ -53,10 +55,7 @@ object PackageInstallerActivityHook33 {
         val insUsrInfo: UserManager = activity.get("mUserManager") as UserManager
         val pkgName = newPkgInfo.packageName
         val oldPkgInfo = try {
-            activity.packageManager.getPackageInfo(
-                pkgName,
-                PackageManager.MATCH_UNINSTALLED_PACKAGES
-            )
+            activity.packageManager.getPackageInfo(pkgName, PackageManager.MATCH_UNINSTALLED_PACKAGES)
         } catch (e: PackageManager.NameNotFoundException) {
             null
         }
@@ -64,13 +63,13 @@ object PackageInstallerActivityHook33 {
         if (oldPkgInfo == null) {
             val install: View? = activity.findHostView("install_confirm_question")
             val oldVersionStr = (newPkgInfo.versionName ?: "N/A") + "(" + newPkgInfo.longVersionCode + ")"
-            sb.append("安装用户: ")
+            sb.append(activity.getString(R.string.user_name) + ": ")
                 .append(insUsrInfo.userName)
                 .append('\n')
-                .append("包名: ")
+                .append(activity.getString(R.string.package_name) + ": ")
                 .append(pkgName, ForegroundColorSpan(ThemeUtil.colorGreen), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
                 .append('\n')
-                .append("版本: ")
+                .append(activity.getString(R.string.version) + ": ")
                 .append(oldVersionStr, ForegroundColorSpan(ThemeUtil.colorGreen), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
             if (install != null) {
                 layout.setPadding(0, install.height, 0, 0)
@@ -82,13 +81,13 @@ object PackageInstallerActivityHook33 {
             val update: View? = activity.findHostView("install_confirm_question_update")
             val oldVersionStr = """${oldPkgInfo.versionName ?: "N/A"}(${oldPkgInfo.longVersionCode})"""
             val newVersionStr = """${newPkgInfo.versionName ?: "N/A"}(${newPkgInfo.longVersionCode})"""
-            sb.append("更新用户: ")
+            sb.append(activity.getString(R.string.user_name) + ": ")
                 .append(insUsrInfo.userName)
                 .append('\n')
-                .append("包名: ")
+                .append(activity.getString(R.string.package_name) + ": ")
                 .append(pkgName, ForegroundColorSpan(ThemeUtil.colorGreen), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
                 .append('\n')
-                .append("版本: ")
+                .append(activity.getString(R.string.version) + ": ")
                 .append(oldVersionStr, ForegroundColorSpan(ThemeUtil.colorRed), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
                 .append(" ➞ ")
                 .append(newVersionStr, ForegroundColorSpan(ThemeUtil.colorGreen), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
@@ -116,10 +115,10 @@ object PackageInstallerActivityHook33 {
         val sb = SpannableStringBuilder()
         if (oldPkgInfo != null) {
             val oldVersionStr = (oldPkgInfo.versionName ?: "N/A") + "(" + oldPkgInfo.longVersionCode + ")"
-            sb.append("包名: ")
+            sb.append(activity.getString(R.string.package_name) + ": ")
                 .append(packageName, ForegroundColorSpan(ThemeUtil.colorRed), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
                 .append('\n')
-                .append("版本: ")
+                .append(activity.getString(R.string.version) + ": ")
                 .append(oldVersionStr, ForegroundColorSpan(ThemeUtil.colorRed), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
             layout.setPadding(activity.dip2px(24f), 0, activity.dip2px(24f), 0)
             textView.text = sb

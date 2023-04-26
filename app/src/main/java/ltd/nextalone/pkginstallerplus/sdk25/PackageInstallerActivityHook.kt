@@ -13,6 +13,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import de.robv.android.xposed.XposedHelpers.getObjectField
+
+import ltd.nextalone.pkginstallerplus.R
 import ltd.nextalone.pkginstallerplus.TAG
 import ltd.nextalone.pkginstallerplus.WRAP_CONTENT
 import ltd.nextalone.pkginstallerplus.dip2px
@@ -60,24 +62,23 @@ object PackageInstallerActivityHook {
             null
         }
         val sb = SpannableStringBuilder()
-        val greenSpan = ForegroundColorSpan(ThemeUtil.colorGreen)
-        val redSpan = ForegroundColorSpan(ThemeUtil.colorRed)
         if (oldPkgInfo == null) {
             val oldVersionStr = (newPkgInfo.versionName ?: "N/A") + "(" + newPkgInfo.versionCode + ")"
-            sb.append("PackageName:\n")
-                .append(" +" + pkgName, greenSpan, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+            sb.append(activity.getString(R.string.package_name) + ": ")
+                .append(pkgName, ForegroundColorSpan(ThemeUtil.colorGreen), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
                 .append('\n')
-                .append(" +" + oldVersionStr, greenSpan, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+                .append(activity.getString(R.string.version) + ": ")
+                .append(oldVersionStr, ForegroundColorSpan(ThemeUtil.colorGreen), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
         } else {
             val oldVersionStr = (oldPkgInfo.versionName ?: "N/A") + "(" + oldPkgInfo.versionCode + ")"
             val newVersionStr = (newPkgInfo.versionName ?: "N/A") + "(" + newPkgInfo.versionCode + ")"
-            sb.append("PackageName:\n")
-                .append("  " + pkgName)
+            sb.append(activity.getString(R.string.package_name) + ": ")
+                .append(pkgName, ForegroundColorSpan(ThemeUtil.colorGreen), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
                 .append('\n')
-                .append("Version:\n")
-                .append(" +" + newVersionStr, greenSpan, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-                .append('\n')
-                .append(" -" + oldVersionStr, redSpan, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+                .append(activity.getString(R.string.version) + ": ")
+                .append(oldVersionStr, ForegroundColorSpan(ThemeUtil.colorRed), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+                .append(" ➞ ")
+                .append(newVersionStr, ForegroundColorSpan(ThemeUtil.colorGreen), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
         }
         tv.text = sb
     }
