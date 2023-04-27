@@ -6,6 +6,6 @@
 - 包名
 - 版本号
 
-![install](cn_install.png)
-![update](cn_update.png)
-![uninstall](cn_uninstall.png)
+![install_cn](cn_install.png)  
+![update_cn](cn_update.png)  
+![uninstall_cn](cn_uninstall.png)

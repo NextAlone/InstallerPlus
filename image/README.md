@@ -6,6 +6,6 @@ Provide this information when installing, uninstalling and updating applications
 - Package name
 - Version code
 
-![install](install.png)
-![update](update.png)
+![install](install.png)  
+![update](update.png)  
 ![uninstall](uninstall.png)
