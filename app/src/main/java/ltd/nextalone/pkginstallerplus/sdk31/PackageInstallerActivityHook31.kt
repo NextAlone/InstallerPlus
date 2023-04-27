@@ -28,6 +28,7 @@ object PackageInstallerActivityHook31 {
                 Thread {
                     Thread.sleep(100)
                     ctx.runOnUiThread {
+                        injectModuleResources(ctx.resources)
                         addInstallDetails(ctx)
                     }
                 }.start()
