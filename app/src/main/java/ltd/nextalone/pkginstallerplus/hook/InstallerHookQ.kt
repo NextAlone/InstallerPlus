@@ -1,10 +1,11 @@
-package ltd.nextalone.pkginstallerplus.sdk30
+package ltd.nextalone.pkginstallerplus.hook
 
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.graphics.Typeface
+import android.os.UserManager
 import android.text.SpannableStringBuilder
 import android.text.Spanned
 import android.text.style.ForegroundColorSpan
@@ -19,8 +20,8 @@ import ltd.nextalone.pkginstallerplus.R
 import ltd.nextalone.pkginstallerplus.dip2px
 import ltd.nextalone.pkginstallerplus.utils.*
 
-@RequiresApi(30)
-object PackageInstallerActivityHook30 {
+@RequiresApi(29)
+object InstallerHookQ {
     fun initOnce() {
         "com.android.packageinstaller.PackageInstallerActivity".clazz?.method("startInstallConfirm")?.hookAfter {
             val ctx: Activity = it.thisObject as Activity
@@ -28,7 +29,6 @@ object PackageInstallerActivityHook30 {
             Thread {
                 Thread.sleep(100)
                 ctx.runOnUiThread {
-                    injectModuleResources(ctx.resources)
                     addInstallDetails(ctx)
                 }
             }.start()
@@ -44,27 +44,35 @@ object PackageInstallerActivityHook30 {
         }
     }
 
-    fun addInstallDetails(activity: Activity) {
+    private fun addInstallDetails(activity: Activity) {
         val textView = TextView(activity)
         textView.setTextIsSelectable(true)
         textView.typeface = Typeface.MONOSPACE
+
         val layout = LinearLayout(activity)
         val newPkgInfo: PackageInfo = activity.get("mPkgInfo") as PackageInfo
+        val usrManager: UserManager = activity.get("mUserManager") as UserManager
         val pkgName = newPkgInfo.packageName
         val oldPkgInfo = try {
             activity.packageManager.getPackageInfo(pkgName, PackageManager.MATCH_UNINSTALLED_PACKAGES)
         } catch (e: PackageManager.NameNotFoundException) {
             null
         }
+
         val sb = SpannableStringBuilder()
         if (oldPkgInfo == null) {
             val install: View? = activity.findHostView("install_confirm_question")
             val oldVersionStr = (newPkgInfo.versionName ?: "N/A") + "(" + newPkgInfo.longVersionCode + ")"
-            sb.append(activity.getString(R.string.IPP_info_package) + ": ")
+
+            sb.append(activity.getString(R.string.IPP_info_user) + ": ")
+                .append(usrManager.userName)
+                .append('\n')
+                .append(activity.getString(R.string.IPP_info_package) + ": ")
                 .append(pkgName, ForegroundColorSpan(ThemeUtil.colorGreen), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
                 .append('\n')
                 .append(activity.getString(R.string.IPP_info_version) + ": ")
                 .append(oldVersionStr, ForegroundColorSpan(ThemeUtil.colorGreen), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+
             if (install != null) {
                 layout.setPadding(0, install.height, 0, 0)
                 textView.text = sb
@@ -75,13 +83,18 @@ object PackageInstallerActivityHook30 {
             val update: View? = activity.findHostView("install_confirm_question_update")
             val oldVersionStr = """${oldPkgInfo.versionName ?: "N/A"}(${oldPkgInfo.longVersionCode})"""
             val newVersionStr = """${newPkgInfo.versionName ?: "N/A"}(${newPkgInfo.longVersionCode})"""
-            sb.append(activity.getString(R.string.IPP_info_package) + ": ")
+
+            sb.append(activity.getString(R.string.IPP_info_user) + ": ")
+                .append(usrManager.userName)
+                .append('\n')
+                .append(activity.getString(R.string.IPP_info_package) + ": ")
                 .append(pkgName, ForegroundColorSpan(ThemeUtil.colorGreen), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
                 .append('\n')
                 .append(activity.getString(R.string.IPP_info_version) + ": ")
                 .append(oldVersionStr, ForegroundColorSpan(ThemeUtil.colorRed), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
                 .append(" ➞ ")
                 .append(newVersionStr, ForegroundColorSpan(ThemeUtil.colorGreen), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+
             if (update != null) {
                 layout.setPadding(0, update.height, 0, 0)
                 textView.text = sb
@@ -91,10 +104,11 @@ object PackageInstallerActivityHook30 {
         }
     }
 
-    fun addUninstallDetails(activity: Activity, dialog: AlertDialog) {
+    private fun addUninstallDetails(activity: Activity, dialog: AlertDialog) {
         val textView = TextView(activity)
         textView.setTextIsSelectable(true)
         textView.typeface = Typeface.MONOSPACE
+
         val layout = LinearLayout(activity)
         if (activity.taskId == -1) return
         val packageName = activity.get("mDialogInfo")?.get("appInfo")?.get("packageName") as String
@@ -103,14 +117,17 @@ object PackageInstallerActivityHook30 {
         } catch (e: PackageManager.NameNotFoundException) {
             null
         }
+
         val sb = SpannableStringBuilder()
         if (oldPkgInfo != null) {
             val oldVersionStr = (oldPkgInfo.versionName ?: "N/A") + "(" + oldPkgInfo.longVersionCode + ")"
+
             sb.append(activity.getString(R.string.IPP_info_package) + ": ")
                 .append(packageName, ForegroundColorSpan(ThemeUtil.colorRed), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
                 .append('\n')
                 .append(activity.getString(R.string.IPP_info_version) + ": ")
                 .append(oldVersionStr, ForegroundColorSpan(ThemeUtil.colorRed), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+
             layout.setPadding(activity.dip2px(24f), 0, activity.dip2px(24f), 0)
             textView.text = sb
             layout.addView(textView, ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT))
@@ -118,4 +135,3 @@ object PackageInstallerActivityHook30 {
         }
     }
 }
-

@@ -2,7 +2,7 @@
 
 Provide this information when installing, uninstalling and updating applications.
 
-- Install user (Android 13 Only)
+- Install user
 - Package name
 - Version code
 

@@ -5,26 +5,21 @@ import android.content.res.AssetManager;
 import android.content.res.Resources;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
-import android.widget.ExpandableListAdapter;
 
 import java.io.File;
 import java.lang.reflect.Method;
 
-import dalvik.system.BaseDexClassLoader;
 import de.robv.android.xposed.IXposedHookLoadPackage;
 import de.robv.android.xposed.IXposedHookZygoteInit;
 import de.robv.android.xposed.callbacks.XC_LoadPackage;
 import de.robv.android.xposed.callbacks.XC_LoadPackage.LoadPackageParam;
-import ltd.nextalone.pkginstallerplus.sdk25.PackageInstallerActivityHook;
-import ltd.nextalone.pkginstallerplus.sdk30.PackageInstallerActivityHook30;
-import ltd.nextalone.pkginstallerplus.sdk31.PackageInstallerActivityHook31;
-import ltd.nextalone.pkginstallerplus.sdk33.PackageInstallerActivityHook33;
+import ltd.nextalone.pkginstallerplus.hook.InstallerHook;
+import ltd.nextalone.pkginstallerplus.hook.InstallerHookQ;
 
 import static ltd.nextalone.pkginstallerplus.utils.LogUtilsKt.logDebug;
 import static ltd.nextalone.pkginstallerplus.utils.LogUtilsKt.logDetail;
 import static ltd.nextalone.pkginstallerplus.utils.LogUtilsKt.logError;
 import static ltd.nextalone.pkginstallerplus.utils.LogUtilsKt.logThrowable;
-import static ltd.nextalone.pkginstallerplus.utils.ReflectUtilsKt.iGetObjectOrNull;
 
 public class HookEntry implements IXposedHookLoadPackage, IXposedHookZygoteInit {
 
@@ -40,38 +35,19 @@ public class HookEntry implements IXposedHookLoadPackage, IXposedHookZygoteInit 
         logDebug("initializeHookInternal start");
         try {
             lpClassLoader = lpparam.classLoader;
-            if (VERSION.SDK_INT >= VERSION_CODES.TIRAMISU) {
-                logDebug("initializeHookApi:33");
-                PackageInstallerActivityHook33.INSTANCE.initOnce();
+            if (VERSION.SDK_INT >= VERSION_CODES.Q) {
+                logDebug("initializeHook:Q");
+                InstallerHookQ.INSTANCE.initOnce();
             } else {
                 throw new Exception("UnsupportApiVersionError");
             }
         } catch (Exception e) {
             try {
-                lpClassLoader = lpparam.classLoader;
-                if (VERSION.SDK_INT >= VERSION_CODES.S) {
-                    logDebug("initializeHookApi:31");
-                    PackageInstallerActivityHook31.INSTANCE.initOnce();
-                } else {
-                    throw new Exception("UnsupportApiVersionError");
-                }
+                logDebug("initializeHook:N");
+                InstallerHook.INSTANCE.initOnce();
             } catch (Exception e1) {
-                try {
-                    lpClassLoader = lpparam.classLoader;
-                    if (VERSION.SDK_INT >= VERSION_CODES.P) {
-                        logDebug("initializeHookApi:30");
-                        PackageInstallerActivityHook30.INSTANCE.initOnce();
-                    } else {
-                        throw new Exception("UnsupportApiVersionError");
-                    }
-                } catch (Exception e2) {
-                    try {
-                        PackageInstallerActivityHook.INSTANCE.initOnce();
-                    } catch (Exception e3) {
-                        e.addSuppressed(e3);
-                        logThrowable("initializeHookInternal: ", e);
-                    }
-                }
+                e.addSuppressed(e1);
+                logThrowable("initializeHookInternal: ", e);
             }
         }
     }

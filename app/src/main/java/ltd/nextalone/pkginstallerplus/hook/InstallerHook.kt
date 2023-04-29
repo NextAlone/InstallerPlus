@@ -1,4 +1,4 @@
-package ltd.nextalone.pkginstallerplus.sdk25
+package ltd.nextalone.pkginstallerplus.hook
 
 import android.annotation.SuppressLint
 import android.app.Activity
@@ -24,7 +24,7 @@ import ltd.nextalone.pkginstallerplus.utils.clazz
 import ltd.nextalone.pkginstallerplus.utils.hookAfter
 import ltd.nextalone.pkginstallerplus.utils.method
 
-object PackageInstallerActivityHook {
+object InstallerHook {
 
     @SuppressLint("PrivateApi")
     fun initOnce() {

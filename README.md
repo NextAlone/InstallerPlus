@@ -14,7 +14,9 @@ Compatible with AOSP-like installer,been tested in:
 1. Oxygen OS Android Q
 2. Hydrogen OS Android 7.1.1
 3. Pixel Experience 11
-4. Pixel/AOSP Android 13
+4. LineageOS Android 12
+5. LineageOS Android 13
+6. Pixel/AOSP Android 13
 
 ## Repo License
 
