@@ -15,10 +15,10 @@ import android.widget.TextView
 import de.robv.android.xposed.XposedHelpers.getObjectField
 
 import ltd.nextalone.pkginstallerplus.R
-import ltd.nextalone.pkginstallerplus.TAG
-import ltd.nextalone.pkginstallerplus.WRAP_CONTENT
-import ltd.nextalone.pkginstallerplus.dip2px
-import ltd.nextalone.pkginstallerplus.getId
+import ltd.nextalone.pkginstallerplus.utils.TAG
+import ltd.nextalone.pkginstallerplus.utils.WRAP_CONTENT
+import ltd.nextalone.pkginstallerplus.utils.dip2px
+import ltd.nextalone.pkginstallerplus.utils.getId
 import ltd.nextalone.pkginstallerplus.utils.ThemeUtil
 import ltd.nextalone.pkginstallerplus.utils.clazz
 import ltd.nextalone.pkginstallerplus.utils.hookAfter

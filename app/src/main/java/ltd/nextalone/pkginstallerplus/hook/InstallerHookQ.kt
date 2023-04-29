@@ -17,7 +17,7 @@ import androidx.annotation.RequiresApi
 
 import ltd.nextalone.pkginstallerplus.HookEntry.injectModuleResources
 import ltd.nextalone.pkginstallerplus.R
-import ltd.nextalone.pkginstallerplus.dip2px
+import ltd.nextalone.pkginstallerplus.utils.dip2px
 import ltd.nextalone.pkginstallerplus.utils.*
 
 @RequiresApi(29)

@@ -23,7 +23,6 @@ import static ltd.nextalone.pkginstallerplus.utils.LogUtilsKt.logThrowable;
 
 public class HookEntry implements IXposedHookLoadPackage, IXposedHookZygoteInit {
 
-    private static final String TAG = "NextAlone";
     public static ClassLoader myClassLoader;
     public static ClassLoader lpClassLoader;
     private static boolean sInitialized = false;

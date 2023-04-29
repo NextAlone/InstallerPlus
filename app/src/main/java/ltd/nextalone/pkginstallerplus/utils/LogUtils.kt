@@ -1,9 +1,8 @@
 package ltd.nextalone.pkginstallerplus.utils
 
 import android.util.Log
-import ltd.nextalone.pkginstallerplus.TAG
 
-
+internal const val TAG = "NextAlone"
 internal fun logDebug(msg: String) {
     Log.d(TAG, msg)
 }

@@ -1,8 +1,6 @@
-package ltd.nextalone.pkginstallerplus
+package ltd.nextalone.pkginstallerplus.utils
 
 import android.content.Context
-
-internal const val TAG = "NextAlone"
 
 const val MATCH_PARENT = -1
 const val WRAP_CONTENT = -2
