@@ -1,6 +1,6 @@
 # Features
 
-Provide this information when installing, uninstalling and updating applications.
+Provide these information when installing, uninstalling and updating applications.
 
 - Install user
 - Package name
