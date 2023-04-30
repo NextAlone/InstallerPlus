@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name" translatable="false">Installer++</string>
+    <string name="IPP_info_version">Version</string>
+    <string name="IPP_info_package">Paquet</string>
+    <string name="IPP_info_user">Utilisateur</string>
+    <string name="IPP_res_inject_success" translatable="false">Resources injection success</string>
+</resources>
