@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="IPP_info_version">Version</string>
+    <string name="IPP_info_package">Paquet</string>
+    <string name="IPP_info_user">Utilisateur</string>
+</resources>
