@@ -13,7 +13,7 @@ import de.robv.android.xposed.IXposedHookLoadPackage;
 import de.robv.android.xposed.IXposedHookZygoteInit;
 import de.robv.android.xposed.callbacks.XC_LoadPackage;
 import de.robv.android.xposed.callbacks.XC_LoadPackage.LoadPackageParam;
-import ltd.nextalone.pkginstallerplus.hook.InstallerHook;
+import ltd.nextalone.pkginstallerplus.hook.InstallerHookN;
 import ltd.nextalone.pkginstallerplus.hook.InstallerHookQ;
 
 import static ltd.nextalone.pkginstallerplus.utils.LogUtilsKt.logDebug;
@@ -35,15 +35,17 @@ public class HookEntry implements IXposedHookLoadPackage, IXposedHookZygoteInit 
         try {
             lpClassLoader = lpparam.classLoader;
             if (VERSION.SDK_INT >= VERSION_CODES.Q) {
-                logDebug("initializeHook:Q");
+                //Android Q -- Android T
+                logDebug("initializeHook: Q");
                 InstallerHookQ.INSTANCE.initOnce();
             } else {
                 throw new Exception("UnsupportApiVersionError");
             }
         } catch (Exception e) {
             try {
-                logDebug("initializeHook:N");
-                InstallerHook.INSTANCE.initOnce();
+                //Android Nougat
+                logDebug("initializeHook: N");
+                InstallerHookN.INSTANCE.initOnce();
             } catch (Exception e1) {
                 e.addSuppressed(e1);
                 logThrowable("initializeHookInternal: ", e);
