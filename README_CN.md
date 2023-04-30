@@ -11,8 +11,8 @@
 
 兼容类原生安装管理器,已在下列ROM测试:
 
-1. 氧OS Android Q
-2. 氢OS Android 7.1.1
+1. 氢OS Android 7.1.1
+2. 氧OS Android Q
 3. Pixel Experience 11
 4. LineageOS Android 12
 5. LineageOS Android 13
