@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="IPP_info_version">バージョン</string>
+    <string name="IPP_info_package">パッケージ</string>
+    <string name="IPP_info_user">ユーザー</string>
+</resources>
