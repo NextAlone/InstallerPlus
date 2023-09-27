@@ -3,4 +3,5 @@
     <string name="IPP_info_version">Version</string>
     <string name="IPP_info_package">Paquet</string>
     <string name="IPP_info_user">Utilisateur</string>
+    <string name="IPP_info_sdk">SDK Cible</string>
 </resources>
