@@ -3,4 +3,5 @@
     <string name="IPP_info_version">版本</string>
     <string name="IPP_info_package">包名</string>
     <string name="IPP_info_user">用户</string>
+    <string name="IPP_info_sdk">目标平台</string>
 </resources>
