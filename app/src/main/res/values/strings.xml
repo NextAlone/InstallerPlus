@@ -2,7 +2,7 @@
 <resources>
     <string name="app_name" translatable="false">Installer++</string>
     <string name="IPP_info_version">Version</string>
-    <string name="IPP_info_package">Package</string>
+    <string name="IPP_info_package">Package name</string>
     <string name="IPP_info_user">User</string>
     <string name="IPP_info_sdk">Target SDK</string>
     <string name="IPP_res_inject_success" translatable="false">Resources injection success</string>
