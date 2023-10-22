@@ -60,8 +60,8 @@ object InstallerHookN {
 
         val sb = SpannableStringBuilder()
         if (oldPkgInfo == null) {
-            val oldVersionStr = (newPkgInfo.versionName ?: "N/A") + "(" + newPkgInfo.versionCode + ")"
-            val oldSdkVersionStr = newPkgInfo.applicationInfo.targetSdkVersion.toString()
+            val newVersionStr = (newPkgInfo.versionName ?: "N/A") + "(" + newPkgInfo.versionCode + ")"
+            val newSdkStr = newPkgInfo.applicationInfo.targetSdkVersion.toString()
 
             sb.append(activity.getString(R.string.IPP_info_user) + ": ")
                 .append(usrManager.userName)
@@ -70,16 +70,16 @@ object InstallerHookN {
                 .append(pkgName, ForegroundColorSpan(ThemeUtil.colorGreen), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
                 .append('\n')
                 .append(activity.getString(R.string.IPP_info_sdk) + ": ")
-                .append(oldSdkVersionStr, ForegroundColorSpan(ThemeUtil.colorGreen), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+                .append(newSdkStr, ForegroundColorSpan(ThemeUtil.colorGreen), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
                 .append('\n')
                 .append(activity.getString(R.string.IPP_info_version) + ": ")
-                .append(oldVersionStr, ForegroundColorSpan(ThemeUtil.colorGreen), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+                .append(newVersionStr, ForegroundColorSpan(ThemeUtil.colorGreen), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
 
         } else {
             val oldVersionStr = (oldPkgInfo.versionName ?: "N/A") + "(" + oldPkgInfo.versionCode + ")"
             val newVersionStr = (newPkgInfo.versionName ?: "N/A") + "(" + newPkgInfo.versionCode + ")"
-            val oldSdkVersionStr = oldPkgInfo.applicationInfo.targetSdkVersion.toString()
-            val newSdkVersionStr = newPkgInfo.applicationInfo.targetSdkVersion.toString()
+            val oldSdkStr = oldPkgInfo.applicationInfo.targetSdkVersion.toString()
+            val newSdkStr = newPkgInfo.applicationInfo.targetSdkVersion.toString()
 
             sb.append(activity.getString(R.string.IPP_info_user) + ": ")
                 .append(usrManager.userName)
@@ -88,9 +88,9 @@ object InstallerHookN {
                 .append(pkgName, ForegroundColorSpan(ThemeUtil.colorGreen), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
                 .append('\n')
                 .append(activity.getString(R.string.IPP_info_sdk) + ": ")
-                .append(oldSdkVersionStr, ForegroundColorSpan(ThemeUtil.colorRed), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+                .append(oldSdkStr, ForegroundColorSpan(ThemeUtil.colorRed), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
                 .append(" ➞ ")
-                .append(newSdkVersionStr, ForegroundColorSpan(ThemeUtil.colorGreen), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+                .append(newSdkStr, ForegroundColorSpan(ThemeUtil.colorGreen), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
                 .append('\n')
                 .append(activity.getString(R.string.IPP_info_version) + ": ")
                 .append(oldVersionStr, ForegroundColorSpan(ThemeUtil.colorRed), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
