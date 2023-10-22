@@ -69,11 +69,11 @@ object InstallerHookN {
                 .append(activity.getString(R.string.IPP_info_package) + ": ")
                 .append(pkgName, ForegroundColorSpan(ThemeUtil.colorGreen), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
                 .append('\n')
-                .append(activity.getString(R.string.IPP_info_sdk) + ": ")
-                .append(newSdkStr, ForegroundColorSpan(ThemeUtil.colorGreen), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-                .append('\n')
                 .append(activity.getString(R.string.IPP_info_version) + ": ")
                 .append(newVersionStr, ForegroundColorSpan(ThemeUtil.colorGreen), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+                .append('\n')
+                .append(activity.getString(R.string.IPP_info_sdk) + ": ")
+                .append(newSdkStr, ForegroundColorSpan(ThemeUtil.colorGreen), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
 
         } else {
             val oldVersionStr = (oldPkgInfo.versionName ?: "N/A") + "(" + oldPkgInfo.versionCode + ")"
@@ -87,15 +87,15 @@ object InstallerHookN {
                 .append(activity.getString(R.string.IPP_info_package) + ": ")
                 .append(pkgName, ForegroundColorSpan(ThemeUtil.colorGreen), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
                 .append('\n')
-                .append(activity.getString(R.string.IPP_info_sdk) + ": ")
-                .append(oldSdkStr, ForegroundColorSpan(ThemeUtil.colorRed), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-                .append(" ➞ ")
-                .append(newSdkStr, ForegroundColorSpan(ThemeUtil.colorGreen), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-                .append('\n')
                 .append(activity.getString(R.string.IPP_info_version) + ": ")
                 .append(oldVersionStr, ForegroundColorSpan(ThemeUtil.colorRed), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
                 .append(" ➞ ")
                 .append(newVersionStr, ForegroundColorSpan(ThemeUtil.colorGreen), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+                .append('\n')
+                .append(activity.getString(R.string.IPP_info_sdk) + ": ")
+                .append(oldSdkStr, ForegroundColorSpan(ThemeUtil.colorRed), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+                .append(" ➞ ")
+                .append(newSdkStr, ForegroundColorSpan(ThemeUtil.colorGreen), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
         }
         textView.text = sb
     }
