@@ -5,6 +5,7 @@
 - 安装用户
 - 包名
 - 版本号
+- 目标平台
 
 ![install_cn](cn_install.png)  
 ![update_cn](cn_update.png)  

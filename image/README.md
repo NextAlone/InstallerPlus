@@ -5,6 +5,7 @@ Provide these information when installing, uninstalling and updating application
 - Install user
 - Package name
 - Version code
+- Target SDK
 
 ![install](install.png)  
 ![update](update.png)  
