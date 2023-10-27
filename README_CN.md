@@ -17,6 +17,7 @@
 4. LineageOS Android 12
 5. LineageOS Android 13
 6. Pixel/AOSP Android 13
+7. Pixel/AOSP Android 14
 
 ## 许可证
 
