@@ -60,7 +60,8 @@ object InstallerHookQ {
 
         val sb = SpannableStringBuilder()
         if (oldPkgInfo == null) {
-            val install: View? = activity.findHostView("install_confirm_question")
+            val install: View? = activity.findHostView("install_confirm_question") ?:
+            activity.get("mDialog")?.findHostView("install_confirm_question") // QPR2+
             val newVersionStr = (newPkgInfo.versionName ?: "N/A") + "(" + newPkgInfo.longVersionCode + ")"
             val newSdkStr = newPkgInfo.applicationInfo.targetSdkVersion.toString()
 
@@ -83,7 +84,8 @@ object InstallerHookQ {
                 (install.parent as ViewGroup).addView(layout)
             }
         } else {
-            val update: View? = activity.findHostView("install_confirm_question_update")
+            val update: View? = activity.findHostView("install_confirm_question_update") ?:
+            activity.get("mDialog")?.findHostView("install_confirm_question_update") // QPR2+
             val oldVersionStr = """${oldPkgInfo.versionName ?: "N/A"}(${oldPkgInfo.longVersionCode})"""
             val newVersionStr = """${newPkgInfo.versionName ?: "N/A"}(${newPkgInfo.longVersionCode})"""
             val oldSdkStr = oldPkgInfo.applicationInfo.targetSdkVersion.toString()
