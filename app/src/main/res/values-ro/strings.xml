@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="IPP_info_version">Versiune</string>
+    <string name="IPP_info_package">Numele pachetului</string>
+    <string name="IPP_info_user">Utilizator</string>
+    <string name="IPP_info_sdk">SDK țintă</string>
+</resources>
