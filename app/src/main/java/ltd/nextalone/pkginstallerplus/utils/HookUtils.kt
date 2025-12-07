@@ -1,5 +1,7 @@
 package ltd.nextalone.pkginstallerplus.utils
 
+import android.content.pm.PackageInfo
+import android.content.pm.PackageManager
 import android.util.Log
 import de.robv.android.xposed.XC_MethodHook
 import de.robv.android.xposed.XC_MethodReplacement
@@ -7,6 +9,8 @@ import de.robv.android.xposed.XposedBridge
 import ltd.nextalone.pkginstallerplus.HookEntry
 import java.lang.reflect.Member
 import java.lang.reflect.Method
+
+const val INSTALLER_V2_PKG = "com.android.packageinstaller.v2.ui"
 
 internal val String.clazz: Class<*>?
     get() = try {
@@ -123,3 +127,14 @@ internal fun Class<*>.method(name: String, size: Int, returnType: Class<*>, cond
     }
     return null
 }
+
+internal val isV2InstallerAvailable: Boolean
+    get() = "$INSTALLER_V2_PKG.InstallLaunch".clazz != null
+
+internal fun PackageManager.getPackageInfoOrNull(pkgName: String): PackageInfo? =
+    try {
+        @Suppress("DEPRECATION", "InlinedApi")
+        getPackageInfo(pkgName, PackageManager.MATCH_UNINSTALLED_PACKAGES)
+    } catch (e: PackageManager.NameNotFoundException) {
+        null
+    }

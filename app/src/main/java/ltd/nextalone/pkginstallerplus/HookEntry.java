@@ -13,9 +13,11 @@ import de.robv.android.xposed.IXposedHookLoadPackage;
 import de.robv.android.xposed.IXposedHookZygoteInit;
 import de.robv.android.xposed.callbacks.XC_LoadPackage;
 import de.robv.android.xposed.callbacks.XC_LoadPackage.LoadPackageParam;
+import ltd.nextalone.pkginstallerplus.hook.InstallerHookBaklava;
 import ltd.nextalone.pkginstallerplus.hook.InstallerHookN;
 import ltd.nextalone.pkginstallerplus.hook.InstallerHookQ;
 
+import static ltd.nextalone.pkginstallerplus.utils.HookUtilsKt.isV2InstallerAvailable;
 import static ltd.nextalone.pkginstallerplus.utils.LogUtilsKt.logDebug;
 import static ltd.nextalone.pkginstallerplus.utils.LogUtilsKt.logDetail;
 import static ltd.nextalone.pkginstallerplus.utils.LogUtilsKt.logError;
@@ -32,8 +34,17 @@ public class HookEntry implements IXposedHookLoadPackage, IXposedHookZygoteInit 
 
     private static void initializeHookInternal(LoadPackageParam lpparam) {
         logDebug("initializeHookInternal start");
+        lpClassLoader = lpparam.classLoader;
+        if (isV2InstallerAvailable()) {
+            // Android 16 QPR2
+            try {
+                logDebug("initializeHook: Baklava QPR2");
+                InstallerHookBaklava.INSTANCE.initOnce();
+            } catch (Exception e) {
+                logThrowable("initializeHook(Baklava QPR2): ", e);
+            }
+        }
         try {
-            lpClassLoader = lpparam.classLoader;
             if (VERSION.SDK_INT >= VERSION_CODES.Q) {
                 //Android Q -- Android T
                 logDebug("initializeHook: Q");
