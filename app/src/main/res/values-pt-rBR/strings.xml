@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name" translatable="false">Installer++</string>
+    <string name="IPP_info_version">Versão</string>
+    <string name="IPP_info_package">Nome do pacote</string>
+    <string name="IPP_info_user">Usuário</string>
+    <string name="IPP_info_sdk">SDK de destino</string>
+    <string name="IPP_res_inject_success" translatable="false">Resources injection success</string>
+</resources>
